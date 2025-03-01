@@ -27,7 +27,7 @@ public class TeleopDrive extends Command {
   private final AlgaeIntake m_algae;
   private final CoralIntake m_coral;
   private final Elevator m_elevator;
-  private final Vision m_vision;
+  // private final Vision m_vision;
 
   // AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(); // update to 2025
   
@@ -49,7 +49,7 @@ public class TeleopDrive extends Command {
     m_algae = algaeIntake;
     m_coral = coralIntake;
     m_elevator = elevator;
-    m_vision = vision;
+    // m_vision = vision;
   }
 
   @Override
