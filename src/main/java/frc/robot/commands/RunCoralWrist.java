@@ -34,13 +34,13 @@ public class RunCoralWrist extends Command {
   public void execute() {
     this.power = RobotContainer.getManipulatorLeftJoyX();
     SmartDashboard.putNumber("Wrist Power", this.power);
-    m_coral.setCoralWristPower(this.power);
+    // m_coral.setCoralWristPower(this.power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_coral.setCoralWristPower(0);
+    // m_coral.setCoralWristPower(0);
     terminate = true;
   }
 
