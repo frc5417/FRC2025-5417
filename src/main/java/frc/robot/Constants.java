@@ -97,6 +97,11 @@ public final class Constants {
     public static final int coralWheel = 53;
     public static final double coralWheelPercent = 0.5;
     public static final double coralWristPercent = 0.4;
+    
+    public static final double coralWristMax = 50;
+    public static final double coralWristkP = 0;
+    public static final double coralWristkI = 0;
+    public static final double coralWristkD = 0;
   }
 
   public static class Elevator {

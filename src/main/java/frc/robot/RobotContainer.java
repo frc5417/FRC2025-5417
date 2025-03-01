@@ -184,6 +184,10 @@ public class RobotContainer {
   public static Boolean getDriveXBool() {
     return m_driverController.x().getAsBoolean();
   }
+
+  public static Boolean getDriveABool() {
+    return m_driverController.a().getAsBoolean();
+  }
  
 
   // =========================================================

@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveBase;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.*;
@@ -78,6 +78,9 @@ public class TeleopDrive extends Command {
     m_driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(xVel, yVel, omega));
 
     // Odometery
+    if (RobotContainer.getDriveABool()) {
+      m_driveBase.resetYaw();
+    }
 
     //
     // Algae Intake
@@ -97,7 +100,10 @@ public class TeleopDrive extends Command {
     }
     // m_coral.setCoralWheelPower(coralPower);
     m_coral.setCoralWheelPower(coralPower * Constants.ManipulatorConstants.coralWheelPercent);
-    m_coral.setCoralWristPower(RobotContainer.getManipulatorLeftJoyY() * Constants.ManipulatorConstants.coralWristPercent);
+
+    wristPos += RobotContainer.getManipulatorLeftJoyY() * Constants.ManipulatorConstants.coralWristPercent;
+    wristPos = MathUtil.clamp(wristPos, 0, Constants.ManipulatorConstants.coralWristMax);
+    m_coral.setWristToPos(wristPos);
 
     //
     // Elevator
