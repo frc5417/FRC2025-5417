@@ -82,23 +82,24 @@ public class TeleopDrive extends Command {
       m_driveBase.resetYaw();
     }
 
-    //
-    // Coral Intake
-    //
-    double coralPower = 0;
-    if (RobotContainer.getManipulatorRightBumperBool()) {
-      coralPower++;
-    }
-    if (RobotContainer.getManipulatorLeftBumperBool()) {
-      coralPower--;
-    }
-    m_coral.setCoralWheelPower(coralPower * Constants.CoralConstants.coralWheelPercent);
-    m_coral.setCoralWristPower(RobotContainer.getManipulatorLeftJoyY() * Constants.CoralConstants.coralWristPercent);
+    // //
+    // // Coral Intake
+    // //
+    // double coralPower = 0;
+    // if (RobotContainer.getManipulatorRightBumperBool()) {
+    //   coralPower++;
+    // }
+    // if (RobotContainer.getManipulatorLeftBumperBool()) {
+    //   coralPower--;
+    // }
+    // m_coral.setCoralWheelPower(coralPower * Constants.CoralConstants.coralWheelPercent);
+    // m_coral.setCoralWristPower(RobotContainer.getManipulatorLeftJoyY() * Constants.CoralConstants.coralWristPercent);
 
-    if (RobotContainer.getManipulatorABool()) { // L2
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
-      m_coral.setCoralWristPos(Constants.CoralConstants.coralWristL2);
-    }
+    // if (RobotContainer.getManipulatorABool()) { // L2
+    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+    //   m_coral.setCoralWristPos(Constants.CoralConstants.coralWristL2);
+    // }
+    
     // //
     // // Elevator
     // //
@@ -115,11 +116,11 @@ public class TeleopDrive extends Command {
     //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorProcessor);
     // }
 
-    elevatorPos += -RobotContainer.getManipulatorRightJoyY();
-    if (RobotContainer.getManipulatorABool()) {
-      elevatorPos = Constants.ElevatorConstants.elevatorL2;
-    }
-    m_elevator.setElevatorPos(elevatorPos);
+    // elevatorPos += -RobotContainer.getManipulatorRightJoyY();
+    // if (RobotContainer.getManipulatorABool()) {
+    //   elevatorPos = Constants.ElevatorConstants.elevatorL2;
+    // }
+    // m_elevator.setElevatorPos(elevatorPos);
 
     // m_elevator.setElevatorPower(-RobotContainer.getManipulatorRightJoyY()); // - is up, + is down
   }

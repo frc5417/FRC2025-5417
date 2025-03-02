@@ -35,7 +35,7 @@ public class CoralIntake extends SubsystemBase {
     coralWheel = new SparkMax(Constants.CoralConstants.coralWheel, MotorType.kBrushless);
 
     wristEncoder = coralWrist.getEncoder();
-    wristPID = coralWrist.getClosedLoopController();
+    coralWristPID = coralWrist.getClosedLoopController();
 
     configMotors();
     coralWristPID = coralWrist.getClosedLoopController();
