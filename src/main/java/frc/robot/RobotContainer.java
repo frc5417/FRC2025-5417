@@ -339,7 +339,7 @@ public class RobotContainer {
         new InstantCommand(() -> {
             driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(-.1, 0, 0));
           }),
-        new WaitCommand(5),
+        new WaitCommand(3.5),
         new InstantCommand(() -> {
           driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0, 0, 0));
         })

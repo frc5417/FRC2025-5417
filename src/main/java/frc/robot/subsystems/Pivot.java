@@ -22,8 +22,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Pivot extends SubsystemBase {
     public final RelativeEncoder pivotEncoder;
     private final SparkMax pivot;
-    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.ElevatorConstants.feedKS, 
-                                                    Constants.ElevatorConstants.feedKV, Constants.ElevatorConstants.feedKA);
+    // private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.ElevatorConstants.feedKS, 
+    //                                                 Constants.ElevatorConstants.feedKV, Constants.ElevatorConstants.feedKA);
     //private SparkClosedLoopController elevatorPID;
 
     public Pivot() {
@@ -33,16 +33,27 @@ public class Pivot extends SubsystemBase {
     }
 
     public void setPivotPower(double power) {
-        pivot.setVoltage(feedforward.calculate(.5 * power));
-        pivot.set(power);
+        // is upper soft stop active (power > 0 && getPos() <= 0)
+        // is lower soft stop active (power < 0 && getPos() >= 82.5)
+
+        if (power < 0 && getPos() < 0) {
+            pivot.set(0);
+        } else if (power > 0 && getPos() > 83.5) {
+            pivot.set(0);
+        } else {
+            pivot.set(power);
+        }
+
+        // pivot.setVoltage(feedforward.calculate(.5 * power));
+        // pivot.set(power);
         // elevatorChild.setVoltage(feedforward.calculate(.5 * -power));
         // elevatorChild.set(power);
     }
-    
+
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
-      SmartDashboard.putNumber("Pivot Encoder", pivotEncoder.getPosition());
+      SmartDashboard.putNumber("Pivot Encoder", getPos());
     }
 
     /**
@@ -55,4 +66,22 @@ public class Pivot extends SubsystemBase {
         pivotConfig.smartCurrentLimit(Constants.MotorConstants.kVortexCL);
         pivot.configure(pivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
+
+    private double getPos() {
+        return pivotEncoder.getPosition();
+    }
+
+    // private boolean shouldRun(double power) {
+    //     boolean goUp, goDown;
+    //     goUp = (power > 0 && getPos() <= 0); // is upper soft stop active
+    //     goDown = (power < 0 && getPos() >= 81.2); // is lower soft stop active
+    //     return goUp || goDown; // if neither, then run
+    // }
+
+    // private boolean shouldNotRun(double power) {
+    //     boolean upper, lower;
+    //     upper = (power > 0 && getPos() <= 0); // is upper soft stop active
+    //     lower = (power < 0 && getPos() >= 81.2); // is lower soft stop active
+    //     return upper || lower; // if neither, then run
+    // }
 }

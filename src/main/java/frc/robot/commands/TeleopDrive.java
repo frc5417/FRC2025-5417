@@ -84,7 +84,8 @@ public class TeleopDrive extends Command {
       m_driveBase.resetYaw();
     }
       
-    m_pivot.setPivotPower(RobotContainer.getManipulatorRightJoyY());
+    // 85.2
+    m_pivot.setPivotPower(RobotContainer.getManipulatorRightJoyY() * .5);
     //
     // Algae Intake
     //
