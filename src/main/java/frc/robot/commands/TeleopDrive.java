@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.*;
@@ -23,9 +24,9 @@ public class TeleopDrive extends Command {
   // Called when the command is initially scheduled.
 
   private final DriveBase m_driveBase;
-  private final AlgaeIntake m_algae;
-  private final CoralIntake m_coral;
-  private final Elevator m_elevator;
+  // private final AlgaeIntake m_algae;
+  // private final CoralIntake m_coral;
+  // private final Elevator m_elevator;
   private final Vision m_vision;
 
   // AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(); // update to 2025
@@ -43,11 +44,11 @@ public class TeleopDrive extends Command {
   double elevatorPos = 0;
   double manipulatorPosition = 0;
 
-  public TeleopDrive(DriveBase driveBase, AlgaeIntake algaeIntake, CoralIntake coralIntake, Elevator elevator, Vision vision) {
+  public TeleopDrive(DriveBase driveBase, Vision vision) {
     m_driveBase = driveBase;
-    m_algae = algaeIntake;
-    m_coral = coralIntake;
-    m_elevator = elevator;
+    // m_algae = algaeIntake;
+    // m_coral = coralIntake;
+    // m_elevator = elevator;
     m_vision = vision;
   }
 
@@ -77,12 +78,9 @@ public class TeleopDrive extends Command {
     m_driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(xVel, yVel, omega));
 
     // Odometery
-
-    //
-    // Algae Intake
-    //
-    double algaePower =  RobotContainer.getManipulatorLeftTrigger() - RobotContainer.getManipulatorRightTrigger();
-    m_algae.setAlgaePower(algaePower * Constants.AlgaeConstants.algaePercentage);
+    if (RobotContainer.getDriveABool()) {
+      m_driveBase.resetYaw();
+    }
 
     //
     // Coral Intake

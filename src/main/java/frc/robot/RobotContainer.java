@@ -14,7 +14,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -34,16 +37,16 @@ public class RobotContainer {
 
   public static Pigeon2 pigeon = new Pigeon2(59, "canivore");
   public static Bezier bezier = new Bezier();
-  public static AlgaeIntake algaeIntake = new AlgaeIntake();
-  public static CoralIntake coralIntake = new CoralIntake();
+  // public static AlgaeIntake algaeIntake = new AlgaeIntake();
+  // public static CoralIntake coralIntake = new CoralIntake();
   public static Kinematics kinematics = new Kinematics(pigeon);
   public static DriveBase driveBase = new DriveBase(kinematics, pigeon);
-  public static Elevator elevator = new Elevator();
+  // public static Elevator elevator = new Elevator();
 
   public static final Vision vision = new Vision();
   
   public static AutonLoader autonLoader = new AutonLoader(driveBase, vision); //NEEDED SUBSYSTEMS FOR AUTON, ELEVATOR NOT USED
-  public static TeleopDrive teleopDrive = new TeleopDrive(driveBase, algaeIntake, coralIntake, elevator, vision); //ALL SUBSYSTEMS
+  public static TeleopDrive teleopDrive = new TeleopDrive(driveBase, vision); //ALL SUBSYSTEMS
 
   public final static CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverPort);
   public final static CommandXboxController m_manipulatorController = new CommandXboxController(OperatorConstants.kManipulatorPort);
@@ -183,6 +186,10 @@ public class RobotContainer {
 
   public static Boolean getDriveXBool() {
     return m_driverController.x().getAsBoolean();
+  }
+
+  public static Boolean getDriveABool() {
+    return m_driverController.a().getAsBoolean();
   }
  
 
@@ -326,7 +333,16 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autonLoader.getAuton();
+    // return autonLoader.getAuton();
+    return new SequentialCommandGroup(
+        new InstantCommand(() -> {
+            driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(-.1, 0, 0));
+          }),
+        new WaitCommand(5),
+        new InstantCommand(() -> {
+          driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0, 0, 0));
+        })
+      );
   }
 
   public void runTeleopCommand() {

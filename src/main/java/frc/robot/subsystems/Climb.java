@@ -4,24 +4,29 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.Constants;
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class Climb extends SubsystemBase {
-  private SparkMax climbMotor;
+  private final SparkMax climbMotor;
 
   /** Creates a new Climb. */
   public Climb() {
     climbMotor = new SparkMax(Constants.ClimbConstants.climbMotorId, MotorType.kBrushless);
 
     configMotor();
+  }
+
+  public void setClimbPower(double power) {
+    climbMotor.set(power);
   }
 
   @Override

@@ -157,7 +157,6 @@ public final class Constants {
     public static final Double[] BlueObstacle_BottomRight = {6.0,2.5};
     public static final Double[] RedObstacle_TopLeft = {2.5, 13.5};
     public static final Double[] RedObstacle_BottomRight = {6.0, 10.0};
-    
   }
 
   public static class VisionConstants {
@@ -174,7 +173,7 @@ public final class Constants {
     public static final Transform3d robotToCam = new Transform3d(new Translation3d(-0.229, 0.254, 0.514), new Rotation3d(0,(75.0*(Math.PI/180.0)),(180.0*(Math.PI/180.0)))); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
 
   //   // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
-    public static final String cameraName = "limelight-bozo";
+    public static final String cameraName = "Limelight";
     public static final double maxDistanceAway = 2.0;
     public static final double forwardKP = 0.1;
     public static final double forwardToAngleRatio = 0.5;
