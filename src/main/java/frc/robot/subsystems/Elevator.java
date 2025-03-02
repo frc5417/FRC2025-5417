@@ -7,11 +7,14 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -24,14 +27,16 @@ public class Elevator extends SubsystemBase {
     private final SparkMax elevatorChild;
     public final RelativeEncoder elevatorParentEncoder;
     public final RelativeEncoder elevatorChildEncoder;
-    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Elevator.feedKS, 
-                                                    Constants.Elevator.feedKV, Constants.Elevator.feedKA);
+    private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.ElevatorConstants.feedKS, 
+                                                    Constants.ElevatorConstants.feedKV, Constants.ElevatorConstants.feedKA);
+    private SparkClosedLoopController elevatorPID;
 
     public Elevator() {
-        elevatorParent = new SparkMax(Constants.Elevator.elevatorParentId, MotorType.kBrushless);
-        elevatorChild = new SparkMax(Constants.Elevator.elevatorChildId, MotorType.kBrushless);
+        elevatorParent = new SparkMax(Constants.ElevatorConstants.elevatorParentId, MotorType.kBrushless);
+        elevatorChild = new SparkMax(Constants.ElevatorConstants.elevatorChildId, MotorType.kBrushless);
 
         motorConfig();
+        elevatorPID = elevatorParent.getClosedLoopController();
 
         elevatorParentEncoder = elevatorParent.getEncoder();
         elevatorChildEncoder = elevatorChild.getEncoder();
@@ -42,6 +47,10 @@ public class Elevator extends SubsystemBase {
         elevatorParent.set(power);
         // elevatorChild.setVoltage(feedforward.calculate(.5 * -power));
         // elevatorChild.set(power);
+    }
+
+    public void setElevatorPos(double pos) {
+        elevatorPID.setReference(pos, ControlType.kPosition);
     }
     
     @Override
@@ -60,10 +69,12 @@ public class Elevator extends SubsystemBase {
 
         parentConfig.idleMode(IdleMode.kBrake);
         parentConfig.smartCurrentLimit(Constants.MotorConstants.kVortexCL);
+        parentConfig.closedLoop.pidf(Constants.ElevatorConstants.elevatorkP, Constants.ElevatorConstants.elevatorkI, 
+            Constants.ElevatorConstants.elevatorkD, Constants.ElevatorConstants.elevatorkF);
         elevatorParent.configure(parentConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
         childConfig.apply(parentConfig);
-        childConfig.follow(elevatorParent, Constants.Elevator.elevatorChildInvert);
+        childConfig.follow(elevatorParent, Constants.ElevatorConstants.elevatorChildInvert);
         elevatorChild.configure(childConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 }

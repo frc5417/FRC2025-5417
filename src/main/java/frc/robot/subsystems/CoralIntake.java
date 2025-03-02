@@ -6,7 +6,9 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -19,14 +21,14 @@ public class CoralIntake extends SubsystemBase {
   /** Creates a new AlgaeIntake. */
     private final SparkMax coralWrist;
     private final SparkMax coralWheel;
-
-    //private DigitalInput coralIntakeSwitch = new DigitalInput(Constants.ManipulatorConstants.coralIntakeLimitValue);
+    private SparkClosedLoopController coralWristPID;
 
   public CoralIntake() {
-    coralWrist = new SparkMax(Constants.ManipulatorConstants.coralWrist, MotorType.kBrushless);
-    coralWheel = new SparkMax(Constants.ManipulatorConstants.coralWheel, MotorType.kBrushless);
+    coralWrist = new SparkMax(Constants.CoralConstants.coralWrist, MotorType.kBrushless);
+    coralWheel = new SparkMax(Constants.CoralConstants.coralWheel, MotorType.kBrushless);
 
     configMotors();
+    coralWristPID = coralWrist.getClosedLoopController();
   }
 
   public void setCoralWristPower(double power) {
@@ -35,6 +37,10 @@ public class CoralIntake extends SubsystemBase {
 
   public void setCoralWheelPower(double power) {
     coralWheel.set(power);
+  }
+
+  public void setCoralWristPos(double pos) {
+    coralWristPID.setReference(pos,ControlType.kPosition);
   }
 
   @Override

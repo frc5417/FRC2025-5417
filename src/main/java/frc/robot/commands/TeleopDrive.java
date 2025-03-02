@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveBase;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.*;
@@ -41,7 +40,7 @@ public class TeleopDrive extends Command {
   int lastTime = 0;
 
   double wristPos = 0.0;
-
+  double elevatorPos = 0;
   double manipulatorPosition = 0;
 
   public TeleopDrive(DriveBase driveBase, AlgaeIntake algaeIntake, CoralIntake coralIntake, Elevator elevator, Vision vision) {
@@ -83,7 +82,7 @@ public class TeleopDrive extends Command {
     // Algae Intake
     //
     double algaePower =  RobotContainer.getManipulatorLeftTrigger() - RobotContainer.getManipulatorRightTrigger();
-    m_algae.setAlgaePower(algaePower * Constants.ManipulatorConstants.algaePercentage);
+    m_algae.setAlgaePower(algaePower * Constants.AlgaeConstants.algaePercentage);
 
     //
     // Coral Intake
@@ -95,15 +94,36 @@ public class TeleopDrive extends Command {
     if (RobotContainer.getManipulatorLeftBumperBool()) {
       coralPower--;
     }
-    // m_coral.setCoralWheelPower(coralPower);
-    m_coral.setCoralWheelPower(coralPower * Constants.ManipulatorConstants.coralWheelPercent);
-    m_coral.setCoralWristPower(RobotContainer.getManipulatorLeftJoyY() * Constants.ManipulatorConstants.coralWristPercent);
+    m_coral.setCoralWheelPower(coralPower * Constants.CoralConstants.coralWheelPercent);
+    m_coral.setCoralWristPower(RobotContainer.getManipulatorLeftJoyY() * Constants.CoralConstants.coralWristPercent);
 
-    //
-    // Elevator
-    //
-    m_elevator.setElevatorPower(-RobotContainer.getManipulatorRightJoyY()); // - is up, + is down
+    if (RobotContainer.getManipulatorABool()) { // L2
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+      m_coral.setCoralWristPos(Constants.CoralConstants.coralWristL2);
+    }
+    // //
+    // // Elevator
+    // //
+    // if (RobotContainer.getManipulatorABool()) { // L2
+    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+    // }
+    // if (RobotContainer.getManipulatorBBool()) { // L3
+    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
+    // } 
+    // if (RobotContainer.getManipulatorXBool()) { // Source
+    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
+    // }
+    // if (RobotContainer.getManipulatorYBool()) { // Processor
+    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorProcessor);
+    // }
 
+    elevatorPos += -RobotContainer.getManipulatorRightJoyY();
+    if (RobotContainer.getManipulatorABool()) {
+      elevatorPos = Constants.ElevatorConstants.elevatorL2;
+    }
+    m_elevator.setElevatorPos(elevatorPos);
+
+    // m_elevator.setElevatorPower(-RobotContainer.getManipulatorRightJoyY()); // - is up, + is down
   }
 
   // Called once the command ends or is interrupted.

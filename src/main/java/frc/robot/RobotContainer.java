@@ -92,7 +92,7 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
 
-    // m_manipulatorController.rightTrigger().whileTrue(new RunAlgae(algaeIntake, 0.5)); // Intake Algae
+    // manipulatorController.rightTrigger().whileTrue(new RunAlgae(algaeIntake, 0.5)); // Intake Algae
     // m_manipulatorController.leftTrigger().whileTrue(new RunAlgae(algaeIntake, -0.5)); // Outtake Algael
     // m_manipulatorController.leftBumper().whileTrue(new RunCoralWheel(coralIntake, 0.5)); // Intake Coral
     // m_manipulatorController.rightBumper().whileTrue(new RunCoralWheel(coralIntake, -0.5)); // Outtake Coral
