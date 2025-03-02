@@ -24,10 +24,11 @@ public class TeleopDrive extends Command {
   // Called when the command is initially scheduled.
 
   private final DriveBase m_driveBase;
-  // private final AlgaeIntake m_algae;
+  private final AlgaeIntake m_algae;
   // private final CoralIntake m_coral;
   // private final Elevator m_elevator;
   private final Vision m_vision;
+  private final Pivot m_pivot;
 
   // AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(); // update to 2025
   
@@ -44,12 +45,13 @@ public class TeleopDrive extends Command {
   double elevatorPos = 0;
   double manipulatorPosition = 0;
 
-  public TeleopDrive(DriveBase driveBase, Vision vision) {
+  public TeleopDrive(DriveBase driveBase, AlgaeIntake algae, Vision vision, Pivot pivot) {
     m_driveBase = driveBase;
-    // m_algae = algaeIntake;
+    m_algae = algae;
     // m_coral = coralIntake;
     // m_elevator = elevator;
     m_vision = vision;
+    m_pivot = pivot;
   }
 
   @Override
@@ -81,6 +83,13 @@ public class TeleopDrive extends Command {
     if (RobotContainer.getDriveABool()) {
       m_driveBase.resetYaw();
     }
+      
+    m_pivot.setPivotPower(RobotContainer.getManipulatorRightJoyY());
+    //
+    // Algae Intake
+    //
+    double algaePower = RobotContainer.getManipulatorLeftTrigger() - RobotContainer.getManipulatorRightTrigger();
+    m_algae.setAlgaePower(algaePower * Constants.AlgaeConstants.algaePercentage);
 
     // //
     // // Coral Intake

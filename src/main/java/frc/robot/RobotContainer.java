@@ -37,16 +37,17 @@ public class RobotContainer {
 
   public static Pigeon2 pigeon = new Pigeon2(59, "canivore");
   public static Bezier bezier = new Bezier();
-  // public static AlgaeIntake algaeIntake = new AlgaeIntake();
+  public static AlgaeIntake algaeIntake = new AlgaeIntake();
   // public static CoralIntake coralIntake = new CoralIntake();
   public static Kinematics kinematics = new Kinematics(pigeon);
   public static DriveBase driveBase = new DriveBase(kinematics, pigeon);
+  public static Pivot pivot = new Pivot();
   // public static Elevator elevator = new Elevator();
 
   public static final Vision vision = new Vision();
   
   public static AutonLoader autonLoader = new AutonLoader(driveBase, vision); //NEEDED SUBSYSTEMS FOR AUTON, ELEVATOR NOT USED
-  public static TeleopDrive teleopDrive = new TeleopDrive(driveBase, vision); //ALL SUBSYSTEMS
+  public static TeleopDrive teleopDrive = new TeleopDrive(driveBase, algaeIntake, vision, pivot); //ALL SUBSYSTEMS
 
   public final static CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverPort);
   public final static CommandXboxController m_manipulatorController = new CommandXboxController(OperatorConstants.kManipulatorPort);

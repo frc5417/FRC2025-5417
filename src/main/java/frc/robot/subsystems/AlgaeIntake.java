@@ -57,6 +57,7 @@ public class AlgaeIntake extends SubsystemBase {
     algaeParent.configure(parentConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     childConfig.apply(parentConfig);
+    childConfig.inverted(false);
     childConfig.follow(algaeParent, Constants.AlgaeConstants.algaeChildInversion);
     // childConfig.inverted(Constants.ManipulatorConstants.algaeChildInversion);
     algaeChild.configure(childConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
