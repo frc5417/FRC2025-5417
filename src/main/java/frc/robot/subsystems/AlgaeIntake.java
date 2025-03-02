@@ -21,11 +21,11 @@ public class AlgaeIntake extends SubsystemBase {
   /** Creates a new AlgaeIntake. */
     private final SparkMax algaeParent;
     private final SparkMax algaeChild;
-    private final DigitalInput algaeIntakeSwitch = new DigitalInput(Constants.ManipulatorConstants.algaeLimitValue);
+    private final DigitalInput algaeIntakeSwitch = new DigitalInput(Constants.AlgaeConstants.algaeLimitValue);
 
   public AlgaeIntake() {
-    algaeParent = new SparkMax(Constants.ManipulatorConstants.algaeParentId, MotorType.kBrushless);
-    algaeChild = new SparkMax(Constants.ManipulatorConstants.algaeChildId, MotorType.kBrushless);
+    algaeParent = new SparkMax(Constants.AlgaeConstants.algaeParentId, MotorType.kBrushless);
+    algaeChild = new SparkMax(Constants.AlgaeConstants.algaeChildId, MotorType.kBrushless);
     
     configMotors();
   }
@@ -57,7 +57,7 @@ public class AlgaeIntake extends SubsystemBase {
     algaeParent.configure(parentConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     childConfig.apply(parentConfig);
-    childConfig.follow(algaeParent, Constants.ManipulatorConstants.algaeChildInversion);
+    childConfig.follow(algaeParent, Constants.AlgaeConstants.algaeChildInversion);
     // childConfig.inverted(Constants.ManipulatorConstants.algaeChildInversion);
     algaeChild.configure(childConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }

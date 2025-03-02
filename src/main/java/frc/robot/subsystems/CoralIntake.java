@@ -25,19 +25,20 @@ public class CoralIntake extends SubsystemBase {
   /** Creates a new AlgaeIntake. */
     private final SparkMax coralWrist;
     private final SparkMax coralWheel;
+    private SparkClosedLoopController coralWristPID;
     private final RelativeEncoder wristEncoder;
-    private final SparkClosedLoopController wristPID;
 
     //private DigitalInput coralIntakeSwitch = new DigitalInput(Constants.ManipulatorConstants.coralIntakeLimitValue);
 
   public CoralIntake() {
-    coralWrist = new SparkMax(Constants.ManipulatorConstants.coralWrist, MotorType.kBrushless);
-    coralWheel = new SparkMax(Constants.ManipulatorConstants.coralWheel, MotorType.kBrushless);
+    coralWrist = new SparkMax(Constants.CoralConstants.coralWrist, MotorType.kBrushless);
+    coralWheel = new SparkMax(Constants.CoralConstants.coralWheel, MotorType.kBrushless);
 
     wristEncoder = coralWrist.getEncoder();
     wristPID = coralWrist.getClosedLoopController();
 
     configMotors();
+    coralWristPID = coralWrist.getClosedLoopController();
   }
 
   // public void setCoralWristPower(double power) {
@@ -49,12 +50,8 @@ public class CoralIntake extends SubsystemBase {
     coralWheel.set(power);
   }
 
-  /**
-   * 
-   * @param position
-   */
-  public void setWristToPos(double position) {
-    wristPID.setReference(position, ControlType.kPosition);
+  public void setCoralWristPos(double pos) {
+    coralWristPID.setReference(pos, ControlType.kPosition);
   }
 
   @Override

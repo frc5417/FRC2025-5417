@@ -20,7 +20,7 @@ public class Climb extends SubsystemBase {
 
   /** Creates a new Climb. */
   public Climb() {
-    climbMotor = new SparkMax(Constants.Climb.climbMotorId, MotorType.kBrushless);
+    climbMotor = new SparkMax(Constants.ClimbConstants.climbMotorId, MotorType.kBrushless);
 
     configMotor();
   }

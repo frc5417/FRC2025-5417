@@ -84,29 +84,37 @@ public final class Constants {
 
   }
 
-  public static class ManipulatorConstants {
-    // Algae Motors
+  public static class AlgaeConstants {
     public static final int algaeParentId = 50;
     public static final int algaeChildId = 51;
     public static final int algaeLimitValue = 0;
     public static final double algaePercentage = .7;
     public static final boolean algaeChildInversion = true;
 
-    // Coral Motors
+  }
+  
+  public static class CoralConstants {
     public static final int coralWrist = 52;
     public static final int coralWheel = 53;
     public static final double coralWheelPercent = 0.5;
     public static final double coralWristPercent = 0.4;
+  
+    // PID
+    public static final double coralWristP = 0;
+    public static final double coralWristI = 0;
+    public static final double coralWristD = 0;
+    public static final double coralWristF = 0;
     
-    public static final double coralWristMax = 50;
-    public static final double coralWristkP = 0;
-    public static final double coralWristkI = 0;
-    public static final double coralWristkD = 0;
+    // Set Position Values
+    public static final double coralWristL2 = 0;
+    public static final double coralWristL3 = 0;
+    public static final double coralWristSource = 0;
+
   }
 
-  public static class Elevator {
-    public static final double elevatorMin = 0;
-    public static final double elevatorMax = 0;
+  public static class ElevatorConstants {
+    public static final double elevatorMin = 1.5;
+    public static final double elevatorMax = 270;
     public static final int elevatorParentId = 54;
     public static final int elevatorChildId = 55;
     public static final boolean elevatorChildInvert = true;
@@ -114,11 +122,24 @@ public final class Constants {
     public static final double feedKS = 0.55;
     public static final double feedKV = 0.13;
     public static final double feedKA = 0;
+
+    // PID 
+    public static final double elevatorkP = 0;
+    public static final double elevatorkI = 0;
+    public static final double elevatorkD = 0;
+    public static final double elevatorkF = 0;
+
+    // Set Position Values
+    public static final double elevatorL2 = 50; // guesstimate
+    public static final double elevatorL3 = 100; // guesstimate
+    //public static final double elevatorL4 = 0; // guesstimate
+    public static final double elevatorSource = 70; // guesstimate
+    public static final double elevatorProcessor = 20; // guesstimate
+    public static final double elevatorReefLowAlgae = 0; // guesstimate
+    public static final double elevatorReefHighAlgae = 0; // guesstimate
   }
 
-  public static class Climb {
-    public static final double climbMin = 0;
-    public static final double climbMax = 0;
+  public static class ClimbConstants {
     public static final int climbMotorId = 56;
   }
 
