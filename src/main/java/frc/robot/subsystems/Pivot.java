@@ -6,24 +6,29 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 
-import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //44eeimport edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Pivot extends SubsystemBase {
+    public final RelativeEncoder pivotEncoder;
     private final SparkMax pivot;
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.ElevatorConstants.feedKS, 
                                                     Constants.ElevatorConstants.feedKV, Constants.ElevatorConstants.feedKA);
     //private SparkClosedLoopController elevatorPID;
 
     public Pivot() {
-        pivot = new SparkMax(Constants.ElevatorConstants.elevatorParentId, MotorType.kBrushless);
-
+        pivot = new SparkMax(8, MotorType.kBrushless);
+        pivotEncoder = pivot.getEncoder();
         motorConfig();
     }
 
@@ -37,16 +42,17 @@ public class Pivot extends SubsystemBase {
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
+      SmartDashboard.putNumber("Pivot Encoder", pivotEncoder.getPosition());
     }
 
     /**
      * Configures the elevator motors.
      */
     private void motorConfig() {
-        SparkFlexConfig pivot = new SparkFlexConfig();
+        SparkMaxConfig pivotConfig = new SparkMaxConfig();
 
-        pivot.idleMode(IdleMode.kBrake);
-        pivot.smartCurrentLimit(Constants.MotorConstants.kVortexCL);
-        //pivot.configure(pivot, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        pivotConfig.idleMode(IdleMode.kBrake);
+        pivotConfig.smartCurrentLimit(Constants.MotorConstants.kVortexCL);
+        pivot.configure(pivotConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 }
