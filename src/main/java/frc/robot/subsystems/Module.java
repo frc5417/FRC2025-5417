@@ -83,8 +83,8 @@ public class Module {
   }
 
   public void setSpeedAndAngle(ModuleState targetState) {
-    double x = setAngle(targetState.getDir());
-    double y = setDriveSpeed(targetState.getVel());
+    // double x = setAngle(targetState.getDir());
+    // double y = setDriveSpeed(targetState.getVel());
 
     // if (++cnt % 50 == 0) {
     //   System.out.printf("Set module %d angle to %f, speed to %f\n", this.moduleNum, x, y);

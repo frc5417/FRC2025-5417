@@ -97,6 +97,11 @@ public final class Constants {
     public static final int coralWheel = 53;
     public static final double coralWheelPercent = 0.5;
     public static final double coralWristPercent = 0.4;
+    
+    public static final double coralWristMax = 50;
+    public static final double coralWristkP = 0;
+    public static final double coralWristkI = 0;
+    public static final double coralWristkD = 0;
   }
 
   public static class Elevator {
@@ -112,6 +117,8 @@ public final class Constants {
   }
 
   public static class Climb {
+    public static final double climbMin = 0;
+    public static final double climbMax = 0;
     public static final int climbMotorId = 56;
   }
 
@@ -129,7 +136,6 @@ public final class Constants {
     public static final Double[] BlueObstacle_BottomRight = {6.0,2.5};
     public static final Double[] RedObstacle_TopLeft = {2.5, 13.5};
     public static final Double[] RedObstacle_BottomRight = {6.0, 10.0};
-    
   }
 
   public static class VisionConstants {
@@ -146,7 +152,7 @@ public final class Constants {
     public static final Transform3d robotToCam = new Transform3d(new Translation3d(-0.229, 0.254, 0.514), new Rotation3d(0,(75.0*(Math.PI/180.0)),(180.0*(Math.PI/180.0)))); //Cam mounted facing forward, half a meter forward of center, half a meter up from center.
 
   //   // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
-    public static final String cameraName = "limelight-bozo";
+    public static final String cameraName = "Limelight";
     public static final double maxDistanceAway = 2.0;
     public static final double forwardKP = 0.1;
     public static final double forwardToAngleRatio = 0.5;
