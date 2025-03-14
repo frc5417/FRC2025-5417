@@ -41,12 +41,13 @@ public class RobotContainer {
   // public static CoralIntake coralIntake = new CoralIntake();
   public static Kinematics kinematics = new Kinematics(pigeon);
   public static DriveBase driveBase = new DriveBase(kinematics, pigeon);
+  public static IntakeFtW intake = new IntakeFtW();
   // public static Elevator elevator = new Elevator();
 
   public static final Vision vision = new Vision();
   
   public static AutonLoader autonLoader = new AutonLoader(driveBase, vision); //NEEDED SUBSYSTEMS FOR AUTON, ELEVATOR NOT USED
-  public static TeleopDrive teleopDrive = new TeleopDrive(driveBase, vision); //ALL SUBSYSTEMS
+  public static TeleopDrive teleopDrive = new TeleopDrive(driveBase, intake, vision); //ALL SUBSYSTEMS
 
   public final static CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverPort);
   public final static CommandXboxController m_manipulatorController = new CommandXboxController(OperatorConstants.kManipulatorPort);

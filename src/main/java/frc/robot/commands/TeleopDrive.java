@@ -27,6 +27,7 @@ public class TeleopDrive extends Command {
   // private final AlgaeIntake m_algae;
   // private final CoralIntake m_coral;
   // private final Elevator m_elevator;
+  private final IntakeFtW m_intake;
   private final Vision m_vision;
 
   // AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(); // update to 2025
@@ -44,11 +45,12 @@ public class TeleopDrive extends Command {
   double elevatorPos = 0;
   double manipulatorPosition = 0;
 
-  public TeleopDrive(DriveBase driveBase, Vision vision) {
+  public TeleopDrive(DriveBase driveBase, IntakeFtW intake, Vision vision) {
     m_driveBase = driveBase;
     // m_algae = algaeIntake;
     // m_coral = coralIntake;
     // m_elevator = elevator;
+    m_intake = intake;
     m_vision = vision;
   }
 
@@ -88,7 +90,7 @@ public class TeleopDrive extends Command {
     // double coralPower = 0;
     // if (RobotContainer.getManipulatorRightBumperBool()) {
     //   coralPower++;
-    // }
+    // } 
     // if (RobotContainer.getManipulatorLeftBumperBool()) {
     //   coralPower--;
     // }
@@ -100,6 +102,22 @@ public class TeleopDrive extends Command {
     //   m_coral.setCoralWristPos(Constants.CoralConstants.coralWristL2);
     // }
     
+
+    //
+    // New Fort Worth Intake
+    //
+    double intakePower = 0.0;
+    if (RobotContainer.getManipulatorRightBumperBool()) {
+      intakePower++;
+    } 
+    if (RobotContainer.getManipulatorLeftBumperBool()) {
+      intakePower--;
+    }
+    m_intake.setIntakeWheelPower(intakePower * Constants.IntakeConstants.intakeWheelPercent);
+    m_intake.setIntakeJointPower(RobotContainer.getManipulatorLeftJoyY() * Constants.IntakeConstants.intakeJointPercent);
+
+
+
     // //
     // // Elevator
     // //

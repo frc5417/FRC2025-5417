@@ -112,6 +112,17 @@ public final class Constants {
 
   }
 
+  public static class IntakeConstants {
+    public static final int intakeParentId = 56;
+    public static final int intakeChildId = 12; 
+    public static final int intakeWristId = 53;
+    public static final double intakeWheelPercent = 0.5;
+    public static final double intakeJointPercent = 0.7;
+    public static final boolean intakeChildInversion = true;
+
+
+  }
+
   public static class ElevatorConstants {
     public static final double elevatorMin = 1.5;
     public static final double elevatorMax = 270;
