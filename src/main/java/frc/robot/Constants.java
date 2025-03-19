@@ -109,7 +109,6 @@ public final class Constants {
     public static final double coralWristL2 = 0;
     public static final double coralWristL3 = 0;
     public static final double coralWristSource = 0;
-
   }
 
   public static class IntakeConstants {
@@ -117,10 +116,8 @@ public final class Constants {
     public static final int intakeChildId = 57; 
     public static final int intakeWristId = 53;
     public static final double intakeWheelPercent = 0.5;
-    public static final double intakeJointPercent = 0.7;
+    public static final double intakeJointPercent = 0.5;
     public static final boolean intakeChildInversion = true;
-
-
   }
 
   public static class ElevatorConstants {

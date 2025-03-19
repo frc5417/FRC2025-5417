@@ -36,7 +36,7 @@ public class IntakeFtW extends SubsystemBase {
     intakeWristPID = intakeWrist.getClosedLoopController();
     
     configMotors();
-    intakeWristPID = intakeWrist.getClosedLoopController();
+    //intakeWristPID = intakeWrist.getClosedLoopController();
   }
 
   public void setIntakeWheelPower(double power) {

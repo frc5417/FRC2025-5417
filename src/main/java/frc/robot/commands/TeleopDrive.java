@@ -5,10 +5,11 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.*;
 
 /** An example command that uses an example subsystem. */
@@ -30,11 +31,10 @@ public class TeleopDrive extends Command {
   private final IntakeFtW m_intake;
   private final Climb m_climb;
   private final Vision m_vision;
-  
+  public final static CommandXboxController m_manipulatorController = new CommandXboxController(OperatorConstants.kManipulatorPort);
 
   // AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(); // update to 2025
   
-
   double prev_omega = 0;
   double prev_xVel = 0;
   double prev_yVel = 0;
@@ -109,26 +109,21 @@ public class TeleopDrive extends Command {
     //
     // New Fort Worth Intake
     //
-    double intakePower = 0.0;
-    if (RobotContainer.getManipulatorRightBumperBool()) {
-      intakePower++;
-    } 
-    if (RobotContainer.getManipulatorLeftBumperBool()) {
-      intakePower--;
-    }
+    double intakePower =  RobotContainer.getManipulatorLeftTrigger() - RobotContainer.getManipulatorRightTrigger();
     m_intake.setIntakeWheelPower(Constants.IntakeConstants.intakeWheelPercent * intakePower);
-    m_intake.setIntakeWristPower(RobotContainer.getManipulatorLeftJoyY() * Constants.IntakeConstants.intakeJointPercent);
-
+    m_intake.setIntakeWristPower(Constants.IntakeConstants.intakeJointPercent * RobotContainer.getManipulatorLeftJoyY());
 
     // 
     // Climb
     //
-   
-    // m_manipulatorController.rightTrigger().whileTrue(new IntakeFtW(intake, 0.5)); // Intake
-    // m_manipulatorController.leftTrigger().whileTrue(new IntakeFtW(intake, -0.5)); // Outtake
-
-    //m_climb.setClimbPower(Constants.ClimbConstants.climbPercent * climbPower);
-
+    double climbPower = 0.0;
+    if (RobotContainer.getManipulatorRightBumperBool()) {
+      climbPower++;
+    } 
+    if (RobotContainer.getManipulatorLeftBumperBool()) {
+      climbPower--;
+    }
+    m_climb.setClimbPower(Constants.ClimbConstants.climbPercent * climbPower);
 
     // //
     // // Elevator
