@@ -26,9 +26,11 @@ public class TeleopDrive extends Command {
   private final DriveBase m_driveBase;
   // private final AlgaeIntake m_algae;
   // private final CoralIntake m_coral;
-  // private final Elevator m_elevator;
+  private final Elevator m_elevator;
   private final IntakeFtW m_intake;
+  private final Climb m_climb;
   private final Vision m_vision;
+  
 
   // AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(); // update to 2025
   
@@ -45,12 +47,13 @@ public class TeleopDrive extends Command {
   double elevatorPos = 0;
   double manipulatorPosition = 0;
 
-  public TeleopDrive(DriveBase driveBase, IntakeFtW intake, Vision vision) {
+  public TeleopDrive(DriveBase driveBase, IntakeFtW intake, Elevator elevator, Climb climb, Vision vision) {
     m_driveBase = driveBase;
     // m_algae = algaeIntake;
     // m_coral = coralIntake;
-    // m_elevator = elevator;
+    m_elevator = elevator;
     m_intake = intake;
+    m_climb = climb;
     m_vision = vision;
   }
 
@@ -113,14 +116,26 @@ public class TeleopDrive extends Command {
     if (RobotContainer.getManipulatorLeftBumperBool()) {
       intakePower--;
     }
-    m_intake.setIntakeWheelPower(intakePower * Constants.IntakeConstants.intakeWheelPercent);
-    m_intake.setIntakeJointPower(RobotContainer.getManipulatorLeftJoyY() * Constants.IntakeConstants.intakeJointPercent);
+    m_intake.setIntakeWheelPower(Constants.IntakeConstants.intakeWheelPercent * intakePower);
+    m_intake.setIntakeWristPower(RobotContainer.getManipulatorLeftJoyY() * Constants.IntakeConstants.intakeJointPercent);
 
+
+    // 
+    // Climb
+    //
+   
+    // m_manipulatorController.rightTrigger().whileTrue(new IntakeFtW(intake, 0.5)); // Intake
+    // m_manipulatorController.leftTrigger().whileTrue(new IntakeFtW(intake, -0.5)); // Outtake
+
+    //m_climb.setClimbPower(Constants.ClimbConstants.climbPercent * climbPower);
 
 
     // //
     // // Elevator
     // //
+    elevatorPos += -RobotContainer.getManipulatorRightJoyY();
+    m_elevator.setElevatorPos(elevatorPos);
+    m_elevator.setElevatorPower(RobotContainer.getManipulatorRightJoyY()); // - is up, + is down
     // if (RobotContainer.getManipulatorABool()) { // L2
     //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
     // }
@@ -134,13 +149,9 @@ public class TeleopDrive extends Command {
     //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorProcessor);
     // }
 
-    // elevatorPos += -RobotContainer.getManipulatorRightJoyY();
     // if (RobotContainer.getManipulatorABool()) {
     //   elevatorPos = Constants.ElevatorConstants.elevatorL2;
     // }
-    // m_elevator.setElevatorPos(elevatorPos);
-
-    // m_elevator.setElevatorPower(-RobotContainer.getManipulatorRightJoyY()); // - is up, + is down
   }
 
   // Called once the command ends or is interrupted.
