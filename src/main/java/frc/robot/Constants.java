@@ -115,16 +115,28 @@ public final class Constants {
     public static final int intakeParentId = 56;
     public static final int intakeChildId = 57; 
     public static final int intakeWristId = 53;
+
     public static final double intakeWheelPercent = 0.5;
     public static final double intakeJointPercent = 0.5;
     public static final boolean intakeChildInversion = true;
+
+    // PID
+    public static final double intakekP = 0;
+    public static final double intakekI = 0;
+    public static final double intakekD = 0;
+    public static final double intakekF = 0;
+
+    // Set Position Value
+    public static final double intakeIntake = 0; // Intaking from source
+    public static final double intakeReef = -43; // Outtaking to reef
+    public static final double intakeL1 = 0; // Outtaking to L1
   }
 
   public static class ElevatorConstants {
     public static final double elevatorMin = 1.5;
-    public static final double elevatorMax = 270;
-    public static final int elevatorParentId = 52;
-    public static final int elevatorChildId = 55;
+    public static final double elevatorMax = 86;
+    public static final int elevatorParentId = 55;
+    public static final int elevatorChildId = 52;
     public static final boolean elevatorChildInvert = true;
 
     public static final double feedKS = 0.55;
@@ -132,19 +144,16 @@ public final class Constants {
     public static final double feedKA = 0;
 
     // PID 
-    public static final double elevatorkP = 0;
+    public static final double elevatorkP = 0.1;
     public static final double elevatorkI = 0;
-    public static final double elevatorkD = 0;
+    public static final double elevatorkD = 0.005;
     public static final double elevatorkF = 0;
 
     // Set Position Values
-    public static final double elevatorL2 = 50; // guesstimate
-    public static final double elevatorL3 = 100; // guesstimate
-    //public static final double elevatorL4 = 0; // guesstimate
-    public static final double elevatorSource = 70; // guesstimate
-    public static final double elevatorProcessor = 20; // guesstimate
-    public static final double elevatorReefLowAlgae = 0; // guesstimate
-    public static final double elevatorReefHighAlgae = 0; // guesstimate
+    public static final double elevatorSource = 1.5;
+    public static final double elevatorL1 = 10; // guestimate
+    public static final double elevatorL2 = 46;
+    public static final double elevatorL3 = 73;
   }
 
   public static class ClimbConstants {
@@ -153,6 +162,11 @@ public final class Constants {
     public static final double climbMin = 1.5;
     public static final double climbMax = 23;
 
+    // PID 
+    public static final double climbkP = 0;
+    public static final double climbkI = 0;
+    public static final double climbkD = 0;
+    public static final double climbkF = 0;  
   }
 
   public static class Auton {

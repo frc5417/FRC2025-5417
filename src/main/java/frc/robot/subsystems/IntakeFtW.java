@@ -69,12 +69,12 @@ public class IntakeFtW extends SubsystemBase {
 
     parentConfig.idleMode(IdleMode.kBrake);
     parentConfig.smartCurrentLimit(Constants.MotorConstants.kNeo550CL);
+    parentConfig.closedLoop.pidf(Constants.IntakeConstants.intakekP,Constants.IntakeConstants.intakekI,
+      Constants.IntakeConstants.intakekD, Constants.IntakeConstants.intakekF);
+    intakeParent.configure(parentConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     childConfig.apply(parentConfig);
     childConfig.follow(intakeParent, Constants.IntakeConstants.intakeChildInversion);
-    // childConfig.inverted(Constants.ManipulatorConstants.intakeChildInversion);
-    
-    intakeParent.configure(parentConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     intakeChild.configure(childConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 

@@ -7,9 +7,6 @@ package frc.robot.commands;
 import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.RobotContainer;
-
-import com.revrobotics.RelativeEncoder;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -88,26 +85,7 @@ public class TeleopDrive extends Command {
     // Odometery
     if (RobotContainer.getDriveABool()) {
       m_driveBase.resetYaw();
-    }
-
-    // //
-    // // Coral Intake
-    // //
-    // double coralPower = 0;
-    // if (RobotContainer.getManipulatorRightBumperBool()) {
-    //   coralPower++;
-    // } 
-    // if (RobotContainer.getManipulatorLeftBumperBool()) {
-    //   coralPower--;
-    // }
-    // m_coral.setCoralWheelPower(coralPower * Constants.CoralConstants.coralWheelPercent);
-    // m_coral.setCoralWristPower(RobotContainer.getManipulatorLeftJoyY() * Constants.CoralConstants.coralWristPercent);
-
-    // if (RobotContainer.getManipulatorABool()) { // L2
-    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
-    //   m_coral.setCoralWristPos(Constants.CoralConstants.coralWristL2);
-    // }
-    
+    }    
 
     //
     // New Fort Worth Intake
@@ -131,30 +109,32 @@ public class TeleopDrive extends Command {
     // m_climb.setClimbPos(climbPos);
     m_climb.setClimbPower(Constants.ClimbConstants.climbPercent * climbPower);
 
-    // //
-    // // Elevator
-    // //
+    //
+    // Elevator
+    //
     elevatorPos += -RobotContainer.getManipulatorRightJoyY();
     elevatorPos = MathUtil.clamp(elevatorPos, Constants.ElevatorConstants.elevatorMin, Constants.ElevatorConstants.elevatorMax);
     m_elevator.setElevatorPos(elevatorPos);
-    m_elevator.setElevatorPower(RobotContainer.getManipulatorRightJoyY()); // - is up, + is down
-    // if (RobotContainer.getManipulatorABool()) { // L2
-    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
-    // }
-    // if (RobotContainer.getManipulatorBBool()) { // L3
-    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
-    // } 
-    // if (RobotContainer.getManipulatorXBool()) { // Source
-    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
-    // }
-    // if (RobotContainer.getManipulatorYBool()) { // Processor
-    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorProcessor);
-    // }
-
-    // if (RobotContainer.getManipulatorABool()) {
-    //   elevatorPos = Constants.ElevatorConstants.elevatorL2;
-    // }
+    //m_elevator.setElevatorPower(-RobotContainer.getManipulatorRightJoyY()); // - is up, + is down
+    
+    //
+    // Macros
+    //
+    if (RobotContainer.getManipulatorBBool()) { // L2
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+      //m_intake.setIntakeWristPos(Constants.IntakeConstants.intakeReef);
+    }
+    if (RobotContainer.getManipulatorYBool()) { // L3
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
+      //m_intake.setIntakeWristPos(Constants.IntakeConstants.intakeReef);
+    } 
+    if (RobotContainer.getManipulatorABool()) { // Source
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
+      //m_intake.setIntakeWristPos(Constants.IntakeConstants.intakeIntake);
+    }
   }
+
+  
 
   // Called once the command ends or is interrupted.
   @Override

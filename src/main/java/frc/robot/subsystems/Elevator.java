@@ -43,7 +43,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public void setElevatorPower(double power) {
-        elevatorParent.setVoltage(feedforward.calculate(.5 * power));
+        elevatorParent.setVoltage(feedforward.calculate(.4 * power));
         elevatorParent.set(power);
         // elevatorChild.setVoltage(feedforward.calculate(.5 * -power));
         // elevatorChild.set(power);
@@ -56,8 +56,8 @@ public class Elevator extends SubsystemBase {
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
-      SmartDashboard.putNumber("Elevator Parent (54) Encoder", elevatorParentEncoder.getPosition());
-      SmartDashboard.putNumber("Elevator Child (55) Encoder", elevatorChildEncoder.getPosition());
+      SmartDashboard.putNumber("Elevator Parent (55) Encoder", elevatorParentEncoder.getPosition());
+      SmartDashboard.putNumber("Elevator Child (52) Encoder", elevatorChildEncoder.getPosition());
     }
 
     /**

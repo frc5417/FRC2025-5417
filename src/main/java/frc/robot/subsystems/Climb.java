@@ -26,7 +26,6 @@ public class Climb extends SubsystemBase {
   private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.ElevatorConstants.feedKS, 
   Constants.ElevatorConstants.feedKV, Constants.ElevatorConstants.feedKA);
 
-
   /** Creates a new Climb. */
   public Climb() {
     climbMotor = new SparkMax(Constants.ClimbConstants.climbMotorId, MotorType.kBrushless);
@@ -44,7 +43,6 @@ public class Climb extends SubsystemBase {
 
   public void setClimbPos(double pos) {
     climbPID.setReference(pos, ControlType.kPosition);
-
   }
 
   @Override
@@ -58,6 +56,8 @@ public class Climb extends SubsystemBase {
 
     climbConfig.smartCurrentLimit(Constants.MotorConstants.kNeoCL);
     climbConfig.idleMode(IdleMode.kBrake);
+    climbConfig.closedLoop.pidf(Constants.ClimbConstants.climbkP, Constants.ClimbConstants.climbkI,
+      Constants.ClimbConstants.climbkD, Constants.ClimbConstants.climbkF);
     climbMotor.configure(climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);    
   }
 }
