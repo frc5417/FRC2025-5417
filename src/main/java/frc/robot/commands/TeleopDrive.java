@@ -7,6 +7,9 @@ package frc.robot.commands;
 import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.RobotContainer;
+
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -123,12 +126,16 @@ public class TeleopDrive extends Command {
     if (RobotContainer.getManipulatorLeftBumperBool()) {
       climbPower--;
     }
+    // climbPos = m_climb.getEncoder();
+    // climbPos = MathUtil.clamp(climbPos, Constants.ClimbConstants.climbMin, Constants.ClimbConstants.climbMax);
+    // m_climb.setClimbPos(climbPos);
     m_climb.setClimbPower(Constants.ClimbConstants.climbPercent * climbPower);
 
     // //
     // // Elevator
     // //
     elevatorPos += -RobotContainer.getManipulatorRightJoyY();
+    elevatorPos = MathUtil.clamp(elevatorPos, Constants.ElevatorConstants.elevatorMin, Constants.ElevatorConstants.elevatorMax);
     m_elevator.setElevatorPos(elevatorPos);
     m_elevator.setElevatorPower(RobotContainer.getManipulatorRightJoyY()); // - is up, + is down
     // if (RobotContainer.getManipulatorABool()) { // L2

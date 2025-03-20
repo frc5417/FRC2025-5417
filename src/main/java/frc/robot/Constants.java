@@ -150,6 +150,9 @@ public final class Constants {
   public static class ClimbConstants {
     public static final int climbMotorId = 8;
     public static final double climbPercent = 0.25;
+    public static final double climbMin = 1.5;
+    public static final double climbMax = 23;
+
   }
 
   public static class Auton {
