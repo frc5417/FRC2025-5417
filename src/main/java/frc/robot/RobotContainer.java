@@ -339,6 +339,11 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
+
+
+  /* VALOR AUTON */
+
   public Command getAutonomousCommand() {
     // return autonLoader.getAuton();
     return new SequentialCommandGroup(
@@ -351,6 +356,37 @@ public class RobotContainer {
         })
       );
   }
+
+
+  // //
+  // // NEW FTW AUTON
+  // //
+  // public Command getAutonomousCommand() {
+  //   // return autonLoader.getAuton();
+  //   // robot should be turned on facing forward, then once initialized, turn 180 so intake faces drivers
+  //   return new SequentialCommandGroup(
+  //       new InstantCommand(() -> {
+  //           driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(.2, 0, 0));
+  //           elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+  //           intake.setIntakeWristPos(Constants.IntakeConstants.intakeReef);
+  //         }),
+  //       new WaitCommand(3),
+  //       new InstantCommand(() -> {
+  //         driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0, 0, 0));
+  //         elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+  //         intake.setIntakeWristPos(Constants.IntakeConstants.intakeReef);
+  //         intake.setIntakeWheelPower(1);
+  //       }),
+  //       new WaitCommand(3),
+  //       new InstantCommand(() -> {
+  //         driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0, 0, 0));
+  //         intake.setIntakeWristPos(0);
+  //         intake.setIntakeWheelPower(0);
+  //         elevator.setElevatorPos(Constants.ElevatorConstants.elevatorMin);
+  //       })
+  //     );
+  // }
+
 
   public void runTeleopCommand() {
     teleopDrive.schedule();

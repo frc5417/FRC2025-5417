@@ -43,7 +43,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public void setElevatorPower(double power) {
-        elevatorParent.setVoltage(feedforward.calculate(.4 * power));
+        elevatorParent.setVoltage(feedforward.calculate(.35 * power));
         elevatorParent.set(power);
         // elevatorChild.setVoltage(feedforward.calculate(.5 * -power));
         // elevatorChild.set(power);
