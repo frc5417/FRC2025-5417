@@ -16,6 +16,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -26,6 +27,8 @@ public class IntakeFtW extends SubsystemBase {
     private final SparkMax intakeWrist;
     private SparkClosedLoopController intakeWristPID;
     private final RelativeEncoder intakeEncoder;
+    // private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.ElevatorConstants.feedKS, 
+    //                                              Constants.ElevatorConstants.feedKV, Constants.ElevatorConstants.feedKA);
 
   public IntakeFtW() {
     intakeParent = new SparkMax(Constants.IntakeConstants.intakeParentId, MotorType.kBrushless);
@@ -33,12 +36,14 @@ public class IntakeFtW extends SubsystemBase {
     intakeWrist = new SparkMax(Constants.IntakeConstants.intakeWristId, MotorType.kBrushless);
 
     configMotors();
+    intakeWristPID = intakeWrist.getClosedLoopController();
 
     intakeEncoder = intakeWrist.getEncoder();
-    intakeWristPID = intakeWrist.getClosedLoopController();
   }
 
   public void setIntakeWheelPower(double power) {
+    // intakeParent.setVoltage(feedforward.calculate(.5 * power));
+    // intakeChild.setVoltage(feedforward.calculate(.5*power));
     intakeParent.set(power);
     intakeChild.set(power);
   }

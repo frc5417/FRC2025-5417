@@ -121,15 +121,15 @@ public final class Constants {
     public static final boolean intakeChildInversion = true;
 
     // PID
-    public static final double intakekP = 0;
+    public static final double intakekP = 0.1;
     public static final double intakekI = 0;
     public static final double intakekD = 0;
     public static final double intakekF = 0;
 
     // Set Position Value
-    public static final double intakeMin = 1;
+    public static final double intakeMin = 2;
     public static final double intakeMax = 43;
-    public static final double intakeIntake = 0; // Intaking from source
+    public static final double intakeIntake = 2; // Intaking from source
     public static final double intakeReef = 15; // Outtaking to reef
     public static final double intakeL1 = 0; // Outtaking to L1
   }

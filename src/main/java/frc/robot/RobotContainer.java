@@ -358,9 +358,9 @@ public class RobotContainer {
   // }
 
 
-  // //
-  // // NEW FTW AUTON
-  // //
+  //
+  // NEW FTW AUTON
+  //
   public Command getAutonomousCommand() {
     // return autonLoader.getAuton();
     return new SequentialCommandGroup(
@@ -375,13 +375,14 @@ public class RobotContainer {
           intake.setIntakeWheelPower(-0.75);
         }),
         new WaitCommand(2),
-        new InstantCommand(() -> {
-          driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0.1,0,0));
-          intake.setIntakeWheelPower(0);
-        }),
-        new WaitCommand(1),
+        // new InstantCommand(() -> {
+        //   driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0.1,0,0));
+        //   intake.setIntakeWheelPower(0);
+        // }),
+        // new WaitCommand(1),
         new InstantCommand(() -> {
           driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0, 0, 0));
+          intake.setIntakeWheelPower(0);
         })
       );
   }

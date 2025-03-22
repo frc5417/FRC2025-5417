@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.MathUtil;
@@ -92,22 +93,26 @@ public class TeleopDrive extends Command {
     //
     double intakePower =  RobotContainer.getManipulatorLeftTrigger() - RobotContainer.getManipulatorRightTrigger();
     m_intake.setIntakeWheelPower(Constants.IntakeConstants.intakeWheelPercent * intakePower);
-    m_intake.setIntakeWristPower(Constants.IntakeConstants.intakeJointPercent * RobotContainer.getManipulatorLeftJoyY());
+    // m_intake.setIntakeWristPower(Constants.IntakeConstants.intakeJointPercent * RobotContainer.getManipulatorLeftJoyY());
+
+    wristPos += RobotContainer.getManipulatorLeftJoyY();
+    wristPos = MathUtil.clamp(wristPos, Constants.IntakeConstants.intakeMin, Constants.IntakeConstants.intakeMax);
+    m_intake.setIntakeWristPos(wristPos);
 
     // 
     // Climb
     //
-    double climbPower = 0.0;
-    if (RobotContainer.getManipulatorRightBumperBool()) {
-      climbPower++;
-    } 
-    if (RobotContainer.getManipulatorLeftBumperBool()) {
-      climbPower--;
-    }
+    // double climbPower = 0.0;
+    // if (RobotContainer.getManipulatorRightBumperBool()) {
+    //   climbPower++;
+    // } 
+    // if (RobotContainer.getManipulatorLeftBumperBool()) {
+    //   climbPower--;
+    // }
     // climbPos = m_climb.getEncoder();
     // climbPos = MathUtil.clamp(climbPos, Constants.ClimbConstants.climbMin, Constants.ClimbConstants.climbMax);
     // m_climb.setClimbPos(climbPos);
-    m_climb.setClimbPower(Constants.ClimbConstants.climbPercent * climbPower);
+    // m_climb.setClimbPower(Constants.ClimbConstants.climbPercent * climbPower);
 
     //
     // Elevator
@@ -120,9 +125,12 @@ public class TeleopDrive extends Command {
     //
     // Macros
     //
+    if (RobotContainer.getManipulatorXBool()) { // L1
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL1);
+    }
     if (RobotContainer.getManipulatorBBool()) { // L2
-      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
-      elevatorPos = Constants.ElevatorConstants.elevatorL2;
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+      // elevatorPos = Constants.ElevatorConstants.elevatorL2;
       //m_intake.setIntakeWristPos(Constants.IntakeConstants.intakeReef);
     }
     if (RobotContainer.getManipulatorYBool()) { // L3
@@ -136,8 +144,6 @@ public class TeleopDrive extends Command {
       //m_intake.setIntakeWristPos(Constants.IntakeConstants.intakeIntake);
     }
   }
-
-  
 
   // Called once the command ends or is interrupted.
   @Override
