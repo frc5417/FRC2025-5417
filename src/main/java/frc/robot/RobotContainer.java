@@ -365,19 +365,23 @@ public class RobotContainer {
     // return autonLoader.getAuton();
     return new SequentialCommandGroup(
         new InstantCommand(() -> {
-          driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(-0.1, 0, 0));
+          driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(-0.2, 0, 0));
           //intake.setIntakeWristPos(Constants.IntakeConstants.intakeReef);
         }),
-        new WaitCommand(5),
+        new WaitCommand(4),
         new InstantCommand(() -> {
-          driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0, 0, 0));
+          driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(-0.1, 0, 0));
           //elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
           intake.setIntakeWheelPower(-0.75);
         }),
-        new WaitCommand(3),   
+        new WaitCommand(2),
         new InstantCommand(() -> {
-          driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0,0,0));
+          driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0.1,0,0));
           intake.setIntakeWheelPower(0);
+        }),
+        new WaitCommand(1),
+        new InstantCommand(() -> {
+          driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0, 0, 0));
         })
       );
   }
