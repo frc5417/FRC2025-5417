@@ -32,11 +32,10 @@ public class IntakeFtW extends SubsystemBase {
     intakeChild = new SparkMax(Constants.IntakeConstants.intakeChildId, MotorType.kBrushless);
     intakeWrist = new SparkMax(Constants.IntakeConstants.intakeWristId, MotorType.kBrushless);
 
+    configMotors();
+
     intakeEncoder = intakeWrist.getEncoder();
     intakeWristPID = intakeWrist.getClosedLoopController();
-    
-    configMotors();
-    //intakeWristPID = intakeWrist.getClosedLoopController();
   }
 
   public void setIntakeWheelPower(double power) {
@@ -56,7 +55,7 @@ public class IntakeFtW extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     //SmartDashboard.putBoolean("Algae Switch", getAlgaeSwitch());
-    SmartDashboard.putNumber("Intake Wrist", getEncoder());
+    SmartDashboard.putNumber("Intake Wrist", -getEncoder());
   }
 
   public double getEncoder() {
@@ -77,6 +76,4 @@ public class IntakeFtW extends SubsystemBase {
     childConfig.follow(intakeParent, Constants.IntakeConstants.intakeChildInversion);
     intakeChild.configure(childConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
-
-  
 }

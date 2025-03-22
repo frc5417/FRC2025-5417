@@ -121,15 +121,18 @@ public class TeleopDrive extends Command {
     // Macros
     //
     if (RobotContainer.getManipulatorBBool()) { // L2
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+      elevatorPos = Constants.ElevatorConstants.elevatorL2;
       //m_intake.setIntakeWristPos(Constants.IntakeConstants.intakeReef);
     }
     if (RobotContainer.getManipulatorYBool()) { // L3
       m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
+      //elevatorPos = Constants.ElevatorConstants.elevatorL3;
       //m_intake.setIntakeWristPos(Constants.IntakeConstants.intakeReef);
     } 
     if (RobotContainer.getManipulatorABool()) { // Source
       m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
+      //elevatorPos = Constants.ElevatorConstants.elevatorSource;
       //m_intake.setIntakeWristPos(Constants.IntakeConstants.intakeIntake);
     }
   }
