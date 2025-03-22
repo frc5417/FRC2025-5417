@@ -31,7 +31,7 @@ public class TeleopDrive extends Command {
   // private final CoralIntake m_coral;
   private final Elevator m_elevator;
   private final IntakeFtW m_intake;
-  private final Climb m_climb;
+  //private final Climb m_climb;
   private final Vision m_vision;
   public final static CommandXboxController m_manipulatorController = new CommandXboxController(OperatorConstants.kManipulatorPort);
 
@@ -49,13 +49,13 @@ public class TeleopDrive extends Command {
   double elevatorPos = 0;
   double manipulatorPosition = 0;
 
-  public TeleopDrive(DriveBase driveBase, IntakeFtW intake, Elevator elevator, Climb climb, Vision vision) {
+  public TeleopDrive(DriveBase driveBase, IntakeFtW intake, Elevator elevator, Vision vision) {
     m_driveBase = driveBase;
     // m_algae = algaeIntake;
     // m_coral = coralIntake;
     m_elevator = elevator;
     m_intake = intake;
-    m_climb = climb;
+    //m_climb = climb;
     m_vision = vision;
   }
 
@@ -85,7 +85,7 @@ public class TeleopDrive extends Command {
     m_driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(xVel, yVel, omega));
 
     // Odometery
-    if (RobotContainer.getDriveABool()) {
+    if (RobotContainer.getDriveYBool()) {
       m_driveBase.resetYaw();
     }    
 
@@ -94,11 +94,11 @@ public class TeleopDrive extends Command {
     //
     double intakePower =  RobotContainer.getManipulatorLeftTrigger() - RobotContainer.getManipulatorRightTrigger();
     m_intake.setIntakeWheelPower(Constants.IntakeConstants.intakeWheelPercent * intakePower);
-    // m_intake.setIntakeWristPower(Constants.IntakeConstants.intakeJointPercent * RobotContainer.getManipulatorLeftJoyY());
+    m_intake.setIntakeWristPower(Constants.IntakeConstants.intakeJointPercent * RobotContainer.getManipulatorLeftJoyY());
 
-    wristPos += RobotContainer.getManipulatorLeftJoyY();
-    wristPos = MathUtil.clamp(wristPos, Constants.IntakeConstants.intakeMin, Constants.IntakeConstants.intakeMax);
-    m_intake.setIntakeWristPos(wristPos);
+    // wristPos += RobotContainer.getManipulatorLeftJoyY();
+    // wristPos = MathUtil.clamp(wristPos, Constants.IntakeConstants.intakeMin, Constants.IntakeConstants.intakeMax);
+    // m_intake.setIntakeWristPos(wristPos);
 
     // 
     // Climb
@@ -127,24 +127,24 @@ public class TeleopDrive extends Command {
     // Macros
     //
     if (RobotContainer.getManipulatorXBool()) { // L1
-      wristPos = Constants.IntakeConstants.intakeL1;
-      elevatorPos = Constants.ElevatorConstants.elevatorL1;
-      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+      // wristPos = Constants.IntakeConstants.intakeL1;
+      // elevatorPos = Constants.ElevatorConstants.elevatorL1;
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL1);
     }
     if (RobotContainer.getManipulatorBBool()) { // L2
-      wristPos = Constants.IntakeConstants.intakeReef;
-      elevatorPos = Constants.ElevatorConstants.elevatorL2;
-      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+      // wristPos = Constants.IntakeConstants.intakeReef;
+      // elevatorPos = Constants.ElevatorConstants.elevatorL2;
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
     }
     if (RobotContainer.getManipulatorYBool()) { // L3
-      wristPos = Constants.IntakeConstants.intakeReef;
-      elevatorPos = Constants.ElevatorConstants.elevatorL3;
-      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
+      // wristPos = Constants.IntakeConstants.intakeReef;
+      // elevatorPos = Constants.ElevatorConstants.elevatorL3;
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
     } 
     if (RobotContainer.getManipulatorABool()) { // Source
-      wristPos = Constants.IntakeConstants.intakeSource;
-      elevatorPos = Constants.ElevatorConstants.elevatorSource;
-      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
+      // wristPos = Constants.IntakeConstants.intakeSource;
+      // elevatorPos = Constants.ElevatorConstants.elevatorSource;
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
     }
   }
 

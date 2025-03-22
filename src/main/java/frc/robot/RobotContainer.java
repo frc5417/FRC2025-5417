@@ -49,7 +49,7 @@ public class RobotContainer {
   public static final Vision vision = new Vision();
   
   public static AutonLoader autonLoader = new AutonLoader(driveBase, vision); //NEEDED SUBSYSTEMS FOR AUTON, ELEVATOR NOT USED
-  public static TeleopDrive teleopDrive = new TeleopDrive(driveBase, intake, elevator, climb, vision); //ALL SUBSYSTEMS
+  public static TeleopDrive teleopDrive = new TeleopDrive(driveBase, intake, elevator, vision); //ALL SUBSYSTEMS
 
   public final static CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverPort);
   public final static CommandXboxController m_manipulatorController = new CommandXboxController(OperatorConstants.kManipulatorPort);
@@ -193,6 +193,10 @@ public class RobotContainer {
 
   public static Boolean getDriveXBool() {
     return m_driverController.x().getAsBoolean();
+  }
+
+  public static Boolean getDriveYBool() {
+    return m_driverController.y().getAsBoolean();
   }
 
   public static Boolean getDriveABool() {

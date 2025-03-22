@@ -135,8 +135,6 @@ public final class Constants {
   }
 
   public static class ElevatorConstants {
-    public static final double elevatorMin = 0.75;
-    public static final double elevatorMax = 86;
     public static final int elevatorParentId = 55;
     public static final int elevatorChildId = 52;
     public static final boolean elevatorChildInvert = true;
@@ -152,7 +150,9 @@ public final class Constants {
     public static final double elevatorkF = 0;
 
     // Set Position Values
-    public static final double elevatorSource = 1.5;
+    public static final double elevatorMin = 0.75;
+    public static final double elevatorMax = 86;
+    public static final double elevatorSource = 0.75;
     public static final double elevatorL1 = 10; // guestimate
     public static final double elevatorL2 = 46;
     public static final double elevatorL3 = 73;
