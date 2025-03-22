@@ -43,7 +43,7 @@ public class IntakeFtW extends SubsystemBase {
 
   public void setIntakeWheelPower(double power) {
     // intakeParent.setVoltage(feedforward.calculate(.5 * power));
-    // intakeChild.setVoltage(feedforward.calculate(.5*power));
+    // intakeChild.setVoltage(feedforward.calculate(.5 * power));
     intakeParent.set(power);
     intakeChild.set(power);
   }
