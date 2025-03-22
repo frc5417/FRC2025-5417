@@ -127,11 +127,11 @@ public final class Constants {
     public static final double intakekF = 0;
 
     // Set Position Value
-    public static final double intakeMin = 2;
-    public static final double intakeMax = 43;
-    public static final double intakeIntake = 2; // Intaking from source
-    public static final double intakeReef = 15; // Outtaking to reef
-    public static final double intakeL1 = 0; // Outtaking to L1
+    public static final double intakeMin = -60;
+    public static final double intakeMax = 0;
+    public static final double intakeSource = -1; // Intaking from source
+    public static final double intakeReef = -50; // Outtaking to reef
+    public static final double intakeL1 = -40; // Outtaking to L1
   }
 
   public static class ElevatorConstants {

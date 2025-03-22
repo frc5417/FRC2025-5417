@@ -10,6 +10,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.*;
 
@@ -126,22 +127,24 @@ public class TeleopDrive extends Command {
     // Macros
     //
     if (RobotContainer.getManipulatorXBool()) { // L1
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL1);
+      wristPos = Constants.IntakeConstants.intakeL1;
+      elevatorPos = Constants.ElevatorConstants.elevatorL1;
+      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
     }
     if (RobotContainer.getManipulatorBBool()) { // L2
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
-      // elevatorPos = Constants.ElevatorConstants.elevatorL2;
-      //m_intake.setIntakeWristPos(Constants.IntakeConstants.intakeReef);
+      wristPos = Constants.IntakeConstants.intakeReef;
+      elevatorPos = Constants.ElevatorConstants.elevatorL2;
+      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
     }
     if (RobotContainer.getManipulatorYBool()) { // L3
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
-      //elevatorPos = Constants.ElevatorConstants.elevatorL3;
-      //m_intake.setIntakeWristPos(Constants.IntakeConstants.intakeReef);
+      wristPos = Constants.IntakeConstants.intakeReef;
+      elevatorPos = Constants.ElevatorConstants.elevatorL3;
+      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
     } 
     if (RobotContainer.getManipulatorABool()) { // Source
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
-      //elevatorPos = Constants.ElevatorConstants.elevatorSource;
-      //m_intake.setIntakeWristPos(Constants.IntakeConstants.intakeIntake);
+      wristPos = Constants.IntakeConstants.intakeSource;
+      elevatorPos = Constants.ElevatorConstants.elevatorSource;
+      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
     }
   }
 

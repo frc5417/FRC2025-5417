@@ -60,7 +60,7 @@ public class IntakeFtW extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     //SmartDashboard.putBoolean("Algae Switch", getAlgaeSwitch());
-    SmartDashboard.putNumber("Intake Wrist", -getEncoder());
+    SmartDashboard.putNumber("Intake Wrist", getEncoder());
   }
 
   public double getEncoder() {
@@ -68,17 +68,15 @@ public class IntakeFtW extends SubsystemBase {
   }
 
   private void configMotors() {
-    SparkMaxConfig parentConfig = new SparkMaxConfig();
-    SparkMaxConfig childConfig = new SparkMaxConfig();
-
-    parentConfig.idleMode(IdleMode.kBrake);
-    parentConfig.smartCurrentLimit(Constants.MotorConstants.kNeo550CL);
-    parentConfig.closedLoop.pidf(Constants.IntakeConstants.intakekP,Constants.IntakeConstants.intakekI,
+    SparkMaxConfig wristConfig = new SparkMaxConfig();
+    
+    wristConfig.smartCurrentLimit(Constants.MotorConstants.kNeoCL);
+    wristConfig.closedLoop.pidf(Constants.IntakeConstants.intakekP,Constants.IntakeConstants.intakekI,
       Constants.IntakeConstants.intakekD, Constants.IntakeConstants.intakekF);
-    intakeParent.configure(parentConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    intakeWrist.configure(wristConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  
+    // SparkMaxConfig parentConfig = new SparkMaxConfig();
+    // SparkMaxConfig childConfig = new SparkMaxConfig();
 
-    childConfig.apply(parentConfig);
-    childConfig.follow(intakeParent, Constants.IntakeConstants.intakeChildInversion);
-    intakeChild.configure(childConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 }
