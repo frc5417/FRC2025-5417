@@ -45,8 +45,6 @@ public class Elevator extends SubsystemBase {
   public void setElevatorPower(double power) {
     elevatorParent.setVoltage(feedforward.calculate(.35 * power));
     elevatorParent.set(power);
-    // elevatorChild.setVoltage(feedforward.calculate(.5 * -power));
-    // elevatorChild.set(power);
   }
 
   public void setElevatorPos(double pos) {
@@ -55,9 +53,6 @@ public class Elevator extends SubsystemBase {
     
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Elevator Parent (55) Encoder", elevatorParentEncoder.getPosition());
-    SmartDashboard.putNumber("Elevator Child (52) Encoder", elevatorChildEncoder.getPosition());
   }
 
   /**
@@ -68,7 +63,7 @@ public class Elevator extends SubsystemBase {
     SparkFlexConfig childConfig = new SparkFlexConfig();
 
     parentConfig.idleMode(IdleMode.kBrake);
-    parentConfig.smartCurrentLimit(Constants.MotorConstants.kVortexCL);
+    parentConfig.smartCurrentLimit(Constants.HardwareConstants.kVortexCL);
     parentConfig.closedLoop.pidf(Constants.ElevatorConstants.elevatorkP, Constants.ElevatorConstants.elevatorkI, 
       Constants.ElevatorConstants.elevatorkD, Constants.ElevatorConstants.elevatorkF);
     elevatorParent.configure(parentConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

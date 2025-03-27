@@ -1,30 +1,26 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
-package frc.robot.subsystems;
+package frc.robot.subsystems.drivetrain;
 
 import frc.robot.Constants;
-import frc.robot.lib.MathLib;
 
-import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Kinematics {
-  /** Creates a new Compute. */
-  private double[] vel = new double[4];
-  private double[] theta = new double[4];
-  public boolean fieldCentric;
-  private double gyro = 0.0;
-  private final Pigeon2 m_pigeon;
+    //
+    // Variables
+    //
+    private double[] vel = new double[4];
+    private double[] theta = new double[4];
+    private boolean isFieldCentric;
+    private double heading; // CCW+ (counter clockwise positive)
+    // private final Pigeon2 m_pigeon;
+    private final Gyro m_gyro;
 
-  public Kinematics(Pigeon2 pigeon) {
-    this.fieldCentric = Constants.OperatorConstants.fieldCentric;
-    m_pigeon = pigeon;
-  }
+    public Kinematics(Gyro gyro) {
+        this.isFieldCentric = Constants.DriveBaseConstants.kIsFieldCentric;
+        m_gyro = gyro;
+    }
 
-  /**
+    /**
    * 
    * @param joy_x
    * @param joy_y
@@ -32,18 +28,18 @@ public class Kinematics {
    */
   private double[][] computeStrafe(double joy_x, double joy_y) {
     double[][] temp_vel = new double[4][2];
-    for(int n=0; n<4; n++) {
+    for(int n = 0; n < 4; n++) {
       // temp_vel[n][0] = ((joy_x*Math.cos(gyro)) - (joy_y*Math.sin(gyro)));
       // temp_vel[n][1] = ((joy_x*Math.sin(gyro)) + (joy_y*Math.cos(gyro)));
 
-      temp_vel[n][0] = (joy_x * Math.cos(gyro)) + (joy_y * Math.sin(gyro));
-      temp_vel[n][1] = (joy_y * Math.cos(gyro)) - (joy_x * Math.sin(gyro));
+      temp_vel[n][0] = (joy_x * Math.cos(heading)) + (joy_y * Math.sin(heading));
+      temp_vel[n][1] = (joy_y * Math.cos(heading)) - (joy_x * Math.sin(heading));
     }
     
     return temp_vel;
   }
 
-  /**
+    /**
    * Converts rotational kinematics (in the polar coords system) to cartesian coordinates.
    * @param omega The angular velocity, in radians per second.
    * @return The vectors of each swerve module in the Cartesian coordinate system.
@@ -61,7 +57,7 @@ public class Kinematics {
     return temp;
   }
 
-  /**
+    /**
    * General method used to add two vectors together.
    * @return 
    */
@@ -75,7 +71,7 @@ public class Kinematics {
     return temp;
   }
 
-  /**
+    /**
    * Adds strafe vectors to vectors for rotation. 
    * @param strafe 2D array of vectors to strafe, per swerve module.
    * @param rotation 2D array of vectors to rotate, per swerve module.
@@ -114,7 +110,7 @@ public class Kinematics {
     }
   }
 
-  /**
+    /**
    * Normalizes the angle between 0 and 2 PI.
    * @param angle the angle which needs to be normalized.
    * @return
@@ -130,7 +126,7 @@ public class Kinematics {
     return angle;
   }
 
-  /**
+    /**
    * Method which runs all the computations for kinematics.
    * <h3>Order of Operations:</h3>
    * <ol>
@@ -150,14 +146,12 @@ public class Kinematics {
     double targetYVelRatio = targetChassisSpeed.vyMetersPerSecond;
     double targetAngVelRatio = targetChassisSpeed.omegaRadiansPerSecond; 
 
-    if (fieldCentric) {
-      this.gyro = this.m_pigeon.getRotation2d().getDegrees();
-      this.gyro *= Math.PI / 180;
+    if (isFieldCentric) {
+      this.heading = this.m_gyro.getRotation2d().getDegrees();
+      this.heading *= Math.PI / 180;
     } else {
-      this.gyro = 0;
+      this.heading = 0;
     }
-    // Pigeon Yaw is recorded to the driver station dashboard
-    SmartDashboard.putNumber("Yaw", MathLib.normalizeDegrees(this.m_pigeon.getRotation2d().getDegrees()));
 
     conv(computeUnicorn(computeStrafe(targetXVelRatio, targetYVelRatio), computeRotation(targetAngVelRatio)));
 
@@ -165,23 +159,9 @@ public class Kinematics {
     
     for (int i = 0; i < 4; i++) {
       targetModuleStates[i] = new Module.ModuleState(vel[i], theta[i]);
-
-      // Telemetery data of each swerve module
-      String name = Constants.ModuleConstants.ModulePosition[i] + " Angle";
-      SmartDashboard.putNumber(name, theta[i]);
-      name = Constants.ModuleConstants.ModulePosition[i] + " Speed";
-      SmartDashboard.putNumber(name, vel[i]);
     }
 
     return targetModuleStates;
   }
-
-  public double[] getVel() {
-  	return vel;
-  }
-  
-  public double[] getTheta() {
-  	return theta;
-  }
+    
 }
-

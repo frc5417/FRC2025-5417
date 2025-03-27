@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
@@ -47,14 +47,14 @@ public class Module {
     this.moduleNum = module;
 
      /* Angle Motor Config */
-    angleMotor = new SparkMax(Constants.ModuleConstants.angleMotorIDS[this.moduleNum], MotorType.kBrushless);
+    angleMotor = new SparkMax(Constants.ModuleConstants.angleMotorIDs[this.moduleNum], MotorType.kBrushless);
     //  angleMotor.setIdleMode(IdleMode.kBrake);
     configAngleMotor();
 
     integratedAngleEncoder = angleMotor.getEncoder();
     angleMotor.getClosedLoopController();
 
-    _CANCoder = new CANcoder(Constants.ModuleConstants.CANCoderID[this.moduleNum], "canivore");
+    _CANCoder = new CANcoder(Constants.ModuleConstants.cancoderIDs[this.moduleNum], "canivore");
     //  configurator = _CANCoder.getConfigurator();
 
     //  _CANCoder.setPositionToAbsolute(0);
@@ -63,14 +63,14 @@ public class Module {
     
      /* Drive Motor Config */
     //  driveMotor = new SparkMax(Constants.ModuleConstants.driveMotorIDS[this.moduleNum], MotorType.kBrushless);
-    driveMotor = new SparkFlex(Constants.ModuleConstants.driveMotorIDS[this.moduleNum], MotorType.kBrushless);
+    driveMotor = new SparkFlex(Constants.ModuleConstants.driveMotorIDs[this.moduleNum], MotorType.kBrushless);
     configDriveMotor();
 
     integratedDriveEncoder = driveMotor.getEncoder();
     driveMotor.getClosedLoopController();
     integratedDriveEncoder.setPosition(0);
      
-    modulePos = Constants.ModuleConstants.ModulePosition[this.moduleNum];
+    modulePos = Constants.ModuleConstants.modulePosition[this.moduleNum];
 
     pid.enableContinuousInput(0, Math.PI * 2);
     pid.setTolerance(0.0);
@@ -203,8 +203,8 @@ public class Module {
     SparkMaxConfig aConfig = new SparkMaxConfig();
 
     // aConfig.inverted(Constants.Swerve.invertAngleMotor);
-    aConfig.idleMode(Constants.Swerve.angleNeutralMode);
-    aConfig.smartCurrentLimit(Constants.MotorConstants.kNeoCL);
+    aConfig.idleMode(Constants.DriveBaseConstants.angleNeutralMode);
+    aConfig.smartCurrentLimit(Constants.HardwareConstants.kNeoCL);
 
     // aConfig.closedLoop.positionWrappingEnabled(true);
     // aConfig.closedLoop.positionWrappingInputRange(0, 360);
@@ -221,8 +221,8 @@ public class Module {
   private void configDriveMotor() {
     SparkFlexConfig dConfig = new SparkFlexConfig();
 
-    dConfig.idleMode(Constants.Swerve.driveNeutralMode);
-    dConfig.smartCurrentLimit(Constants.MotorConstants.kVortexCL);
+    dConfig.idleMode(Constants.DriveBaseConstants.driveNeutralMode);
+    dConfig.smartCurrentLimit(Constants.HardwareConstants.kVortexCL);
     
     // dConfig.closedLoop.pid(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD);
     // dConfig.closedLoop.velocityFF(Constants.Swerve.driveKF);
