@@ -33,11 +33,6 @@ public class TeleopDrive extends Command {
   private final IntakeFtW m_intake;
   //private final Climb m_climb;
   private final Vision m_vision;
-<<<<<<< HEAD
-  private final Pivot m_pivot;
-=======
-  public final static CommandXboxController m_manipulatorController = new CommandXboxController(OperatorConstants.kManipulatorPort);
->>>>>>> 6b034d3c436c64979ceba36b778100ffe4df5a9c
 
   // AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(); // update to 2025
   
@@ -53,17 +48,11 @@ public class TeleopDrive extends Command {
   double elevatorPos = 0;
   double manipulatorPosition = 0;
 
-<<<<<<< HEAD
-  public TeleopDrive(DriveBase driveBase, AlgaeIntake algae, Vision vision, Pivot pivot) {
-=======
-  public TeleopDrive(DriveBase driveBase, IntakeFtW intake, Elevator elevator, Vision vision) {
->>>>>>> 6b034d3c436c64979ceba36b778100ffe4df5a9c
+  public TeleopDrive(DriveBase driveBase, Vision vision) {
     m_driveBase = driveBase;
     m_algae = algae;
     // m_coral = coralIntake;
-    m_elevator = elevator;
-    m_intake = intake;
-    //m_climb = climb;
+    // m_elevator = elevator;
     m_vision = vision;
     m_pivot = pivot;
   }
@@ -96,35 +85,12 @@ public class TeleopDrive extends Command {
     // Odometery
     if (RobotContainer.getDriveYBool()) {
       m_driveBase.resetYaw();
-<<<<<<< HEAD
     }
-      
-    // 85.2
-    m_pivot.setPivotPower(RobotContainer.getManipulatorRightJoyY() * .5);
-    //
-    // Algae Intake
-    //
-    double algaePower = RobotContainer.getManipulatorLeftTrigger() - RobotContainer.getManipulatorRightTrigger();
-    m_algae.setAlgaePower(algaePower * Constants.AlgaeConstants.algaePercentage);
-=======
-    }    
->>>>>>> 6b034d3c436c64979ceba36b778100ffe4df5a9c
 
-    //
-    // New Fort Worth Intake
-    //
-    double intakePower =  RobotContainer.getManipulatorLeftTrigger() - RobotContainer.getManipulatorRightTrigger();
-    m_intake.setIntakeWheelPower(Constants.IntakeConstants.intakeWheelPercent * intakePower);
-    m_intake.setIntakeWristPower(Constants.IntakeConstants.intakeJointPercent * RobotContainer.getManipulatorLeftJoyY());
-
-    // wristPos += RobotContainer.getManipulatorLeftJoyY();
-    // wristPos = MathUtil.clamp(wristPos, Constants.IntakeConstants.intakeMin, Constants.IntakeConstants.intakeMax);
-    // m_intake.setIntakeWristPos(wristPos);
-
-    // 
-    // Climb
-    //
-    // double climbPower = 0.0;
+    // //
+    // // Coral Intake
+    // //
+    // double coralPower = 0;
     // if (RobotContainer.getManipulatorRightBumperBool()) {
     //   climbPower++;
     // } 
