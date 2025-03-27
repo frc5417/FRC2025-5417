@@ -41,13 +41,12 @@ public class RobotContainer {
   // public static CoralIntake coralIntake = new CoralIntake();
   public static Kinematics kinematics = new Kinematics(pigeon);
   public static DriveBase driveBase = new DriveBase(kinematics, pigeon);
-  public static Pivot pivot = new Pivot();
   // public static Elevator elevator = new Elevator();
 
   public static final Vision vision = new Vision();
   
   public static AutonLoader autonLoader = new AutonLoader(driveBase, vision); //NEEDED SUBSYSTEMS FOR AUTON, ELEVATOR NOT USED
-  public static TeleopDrive teleopDrive = new TeleopDrive(driveBase, algaeIntake, vision, pivot); //ALL SUBSYSTEMS
+  public static TeleopDrive teleopDrive = new TeleopDrive(driveBase, vision); //ALL SUBSYSTEMS
 
   public final static CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverPort);
   public final static CommandXboxController m_manipulatorController = new CommandXboxController(OperatorConstants.kManipulatorPort);
@@ -100,6 +99,10 @@ public class RobotContainer {
     // m_manipulatorController.leftTrigger().whileTrue(new RunAlgae(algaeIntake, -0.5)); // Outtake Algael
     // m_manipulatorController.leftBumper().whileTrue(new RunCoralWheel(coralIntake, 0.5)); // Intake Coral
     // m_manipulatorController.rightBumper().whileTrue(new RunCoralWheel(coralIntake, -0.5)); // Outtake Coral
+
+    // m_manipulatorController.rightTrigger().whileTrue(new IntakeFtW(intake, 0.5)); // Intake
+    // m_manipulatorController.leftTrigger().whileTrue(new IntakeFtW(intake, -0.5)); // Outtake
+
 
   }
 
@@ -187,6 +190,10 @@ public class RobotContainer {
 
   public static Boolean getDriveXBool() {
     return m_driverController.x().getAsBoolean();
+  }
+
+  public static Boolean getDriveYBool() {
+    return m_driverController.y().getAsBoolean();
   }
 
   public static Boolean getDriveABool() {
@@ -333,18 +340,42 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
+
+
+  /* VALOR AUTON */
+
+  // public Command getAutonomousCommand() {
+  //   // return autonLoader.getAuton();
+  //   return new SequentialCommandGroup(
+  //       new InstantCommand(() -> {
+  //           driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(-.1, 0, 0));
+  //         }),
+  //       new WaitCommand(5),
+  //       new InstantCommand(() -> {
+  //         driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0, 0, 0));
+  //       })
+  //     );
+  // }
+
+
+  //
+  // NEW FTW AUTON
+  //
   public Command getAutonomousCommand() {
     // return autonLoader.getAuton();
     return new SequentialCommandGroup(
         new InstantCommand(() -> {
             driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(-.1, 0, 0));
           }),
-        new WaitCommand(3.5),
+        new WaitCommand(5),
         new InstantCommand(() -> {
           driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(0, 0, 0));
+          intake.setIntakeWheelPower(0);
         })
       );
   }
+
 
   public void runTeleopCommand() {
     teleopDrive.schedule();

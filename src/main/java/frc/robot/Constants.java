@@ -109,14 +109,34 @@ public final class Constants {
     public static final double coralWristL2 = 0;
     public static final double coralWristL3 = 0;
     public static final double coralWristSource = 0;
+  }
 
+  public static class IntakeConstants {
+    public static final int intakeParentId = 56;
+    public static final int intakeChildId = 57; 
+    public static final int intakeWristId = 53;
+
+    public static final double intakeWheelPercent = 0.5;
+    public static final double intakeJointPercent = 0.5;
+    public static final boolean intakeChildInversion = true;
+
+    // PID
+    public static final double intakekP = 0.1;
+    public static final double intakekI = 0;
+    public static final double intakekD = 0;
+    public static final double intakekF = 0;
+
+    // Set Position Value
+    public static final double intakeMin = -60;
+    public static final double intakeMax = 0;
+    public static final double intakeSource = -1; // Intaking from source
+    public static final double intakeReef = -50; // Outtaking to reef
+    public static final double intakeL1 = -40; // Outtaking to L1
   }
 
   public static class ElevatorConstants {
-    public static final double elevatorMin = 1.5;
-    public static final double elevatorMax = 270;
-    public static final int elevatorParentId = 54;
-    public static final int elevatorChildId = 55;
+    public static final int elevatorParentId = 55;
+    public static final int elevatorChildId = 52;
     public static final boolean elevatorChildInvert = true;
 
     public static final double feedKS = 0.55;
@@ -124,23 +144,31 @@ public final class Constants {
     public static final double feedKA = 0;
 
     // PID 
-    public static final double elevatorkP = 0;
+    public static final double elevatorkP = 0.4; 
     public static final double elevatorkI = 0;
     public static final double elevatorkD = 0;
     public static final double elevatorkF = 0;
 
     // Set Position Values
-    public static final double elevatorL2 = 50; // guesstimate
-    public static final double elevatorL3 = 100; // guesstimate
-    //public static final double elevatorL4 = 0; // guesstimate
-    public static final double elevatorSource = 70; // guesstimate
-    public static final double elevatorProcessor = 20; // guesstimate
-    public static final double elevatorReefLowAlgae = 0; // guesstimate
-    public static final double elevatorReefHighAlgae = 0; // guesstimate
+    public static final double elevatorMin = 0.75;
+    public static final double elevatorMax = 86;
+    public static final double elevatorSource = 0.75;
+    public static final double elevatorL1 = 10; // guestimate
+    public static final double elevatorL2 = 46;
+    public static final double elevatorL3 = 73;
   }
 
   public static class ClimbConstants {
-    public static final int climbMotorId = 56;
+    public static final int climbMotorId = 8;
+    public static final double climbPercent = 0.25;
+    public static final double climbMin = 1.5;
+    public static final double climbMax = 23;
+
+    // PID 
+    public static final double climbkP = 0;
+    public static final double climbkI = 0;
+    public static final double climbkD = 0;
+    public static final double climbkF = 0;  
   }
 
   public static class Auton {

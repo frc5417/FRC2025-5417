@@ -5,10 +5,13 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.*;
 
 /** An example command that uses an example subsystem. */
@@ -26,13 +29,18 @@ public class TeleopDrive extends Command {
   private final DriveBase m_driveBase;
   private final AlgaeIntake m_algae;
   // private final CoralIntake m_coral;
-  // private final Elevator m_elevator;
+  private final Elevator m_elevator;
+  private final IntakeFtW m_intake;
+  //private final Climb m_climb;
   private final Vision m_vision;
+<<<<<<< HEAD
   private final Pivot m_pivot;
+=======
+  public final static CommandXboxController m_manipulatorController = new CommandXboxController(OperatorConstants.kManipulatorPort);
+>>>>>>> 6b034d3c436c64979ceba36b778100ffe4df5a9c
 
   // AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField(); // update to 2025
   
-
   double prev_omega = 0;
   double prev_xVel = 0;
   double prev_yVel = 0;
@@ -45,11 +53,17 @@ public class TeleopDrive extends Command {
   double elevatorPos = 0;
   double manipulatorPosition = 0;
 
+<<<<<<< HEAD
   public TeleopDrive(DriveBase driveBase, AlgaeIntake algae, Vision vision, Pivot pivot) {
+=======
+  public TeleopDrive(DriveBase driveBase, IntakeFtW intake, Elevator elevator, Vision vision) {
+>>>>>>> 6b034d3c436c64979ceba36b778100ffe4df5a9c
     m_driveBase = driveBase;
     m_algae = algae;
     // m_coral = coralIntake;
-    // m_elevator = elevator;
+    m_elevator = elevator;
+    m_intake = intake;
+    //m_climb = climb;
     m_vision = vision;
     m_pivot = pivot;
   }
@@ -80,8 +94,9 @@ public class TeleopDrive extends Command {
     m_driveBase.setDriveSpeed(RobotContainer.getSaturatedSpeeds(xVel, yVel, omega));
 
     // Odometery
-    if (RobotContainer.getDriveABool()) {
+    if (RobotContainer.getDriveYBool()) {
       m_driveBase.resetYaw();
+<<<<<<< HEAD
     }
       
     // 85.2
@@ -91,48 +106,67 @@ public class TeleopDrive extends Command {
     //
     double algaePower = RobotContainer.getManipulatorLeftTrigger() - RobotContainer.getManipulatorRightTrigger();
     m_algae.setAlgaePower(algaePower * Constants.AlgaeConstants.algaePercentage);
+=======
+    }    
+>>>>>>> 6b034d3c436c64979ceba36b778100ffe4df5a9c
 
-    // //
-    // // Coral Intake
-    // //
-    // double coralPower = 0;
+    //
+    // New Fort Worth Intake
+    //
+    double intakePower =  RobotContainer.getManipulatorLeftTrigger() - RobotContainer.getManipulatorRightTrigger();
+    m_intake.setIntakeWheelPower(Constants.IntakeConstants.intakeWheelPercent * intakePower);
+    m_intake.setIntakeWristPower(Constants.IntakeConstants.intakeJointPercent * RobotContainer.getManipulatorLeftJoyY());
+
+    // wristPos += RobotContainer.getManipulatorLeftJoyY();
+    // wristPos = MathUtil.clamp(wristPos, Constants.IntakeConstants.intakeMin, Constants.IntakeConstants.intakeMax);
+    // m_intake.setIntakeWristPos(wristPos);
+
+    // 
+    // Climb
+    //
+    // double climbPower = 0.0;
     // if (RobotContainer.getManipulatorRightBumperBool()) {
-    //   coralPower++;
-    // }
-    // if (RobotContainer.getManipulatorLeftBumperBool()) {
-    //   coralPower--;
-    // }
-    // m_coral.setCoralWheelPower(coralPower * Constants.CoralConstants.coralWheelPercent);
-    // m_coral.setCoralWristPower(RobotContainer.getManipulatorLeftJoyY() * Constants.CoralConstants.coralWristPercent);
-
-    // if (RobotContainer.getManipulatorABool()) { // L2
-    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
-    //   m_coral.setCoralWristPos(Constants.CoralConstants.coralWristL2);
-    // }
-    
-    // //
-    // // Elevator
-    // //
-    // if (RobotContainer.getManipulatorABool()) { // L2
-    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
-    // }
-    // if (RobotContainer.getManipulatorBBool()) { // L3
-    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
+    //   climbPower++;
     // } 
-    // if (RobotContainer.getManipulatorXBool()) { // Source
-    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
+    // if (RobotContainer.getManipulatorLeftBumperBool()) {
+    //   climbPower--;
     // }
-    // if (RobotContainer.getManipulatorYBool()) { // Processor
-    //   m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorProcessor);
-    // }
+    // climbPos = m_climb.getEncoder();
+    // climbPos = MathUtil.clamp(climbPos, Constants.ClimbConstants.climbMin, Constants.ClimbConstants.climbMax);
+    // m_climb.setClimbPos(climbPos);
+    // m_climb.setClimbPower(Constants.ClimbConstants.climbPercent * climbPower);
 
-    // elevatorPos += -RobotContainer.getManipulatorRightJoyY();
-    // if (RobotContainer.getManipulatorABool()) {
-    //   elevatorPos = Constants.ElevatorConstants.elevatorL2;
-    // }
-    // m_elevator.setElevatorPos(elevatorPos);
-
-    // m_elevator.setElevatorPower(-RobotContainer.getManipulatorRightJoyY()); // - is up, + is down
+    //
+    // Elevator
+    //
+    elevatorPos += -RobotContainer.getManipulatorRightJoyY();
+    elevatorPos = MathUtil.clamp(elevatorPos, Constants.ElevatorConstants.elevatorMin, Constants.ElevatorConstants.elevatorMax);
+    m_elevator.setElevatorPos(elevatorPos);
+    //m_elevator.setElevatorPower(-RobotContainer.getManipulatorRightJoyY()); // - is up, + is down
+    
+    //
+    // Macros
+    //
+    if (RobotContainer.getManipulatorXBool()) { // L1
+      // wristPos = Constants.IntakeConstants.intakeL1;
+      // elevatorPos = Constants.ElevatorConstants.elevatorL1;
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL1);
+    }
+    if (RobotContainer.getManipulatorBBool()) { // L2
+      // wristPos = Constants.IntakeConstants.intakeReef;
+      // elevatorPos = Constants.ElevatorConstants.elevatorL2;
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+    }
+    if (RobotContainer.getManipulatorYBool()) { // L3
+      // wristPos = Constants.IntakeConstants.intakeReef;
+      // elevatorPos = Constants.ElevatorConstants.elevatorL3;
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
+    } 
+    if (RobotContainer.getManipulatorABool()) { // Source
+      // wristPos = Constants.IntakeConstants.intakeSource;
+      // elevatorPos = Constants.ElevatorConstants.elevatorSource;
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
+    }
   }
 
   // Called once the command ends or is interrupted.
