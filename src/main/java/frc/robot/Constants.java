@@ -95,7 +95,7 @@ public final class Constants {
 
     // Set Position Values
     public static final double elevatorMin = 0.75;
-    public static final double elevatorMax = 86;
+    public static final double elevatorMax = 200;
     public static final double elevatorSource = 0.75; //change
     public static final double elevatorL1 = 10; // guestimate
     public static final double elevatorL2 = 46;

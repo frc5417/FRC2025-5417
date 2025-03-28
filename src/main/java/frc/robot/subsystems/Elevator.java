@@ -53,6 +53,11 @@ public class Elevator extends SubsystemBase {
     
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Elevator Motor", getEncoder());
+
+  }
+  public double getEncoder() {
+    return elevatorParentEncoder.getPosition();
   }
 
   /**
