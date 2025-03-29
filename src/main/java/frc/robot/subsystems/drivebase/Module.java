@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.drivetrain;
+package frc.robot.subsystems.drivebase;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
@@ -131,12 +131,12 @@ public class Module {
   }
 
   /**
-   * Gets the current absolute position of the CANCoder, subtracts it from the 
+   * Gets the current absolute position (in revolutions) of the CANCoder, subtracts it from the 
    * starting motor degrees, and then converts into radians. 
    * @return
    */
   public double getAngleInRadians() { 
-    return (_CANCoder.getAbsolutePosition().getValueAsDouble() * 360.0 - Constants.ModuleConstants.motorDegrees[this.moduleNum]) * (Math.PI/180.0);
+    return (_CANCoder.getAbsolutePosition().getValueAsDouble() * 360.0 - Constants.ModuleConstants.angleOffset[this.moduleNum]) * (Math.PI/180.0);
   }
 
   public double getAngle() {
@@ -203,7 +203,7 @@ public class Module {
     SparkMaxConfig aConfig = new SparkMaxConfig();
 
     // aConfig.inverted(Constants.Swerve.invertAngleMotor);
-    aConfig.idleMode(Constants.DriveBaseConstants.angleNeutralMode);
+    aConfig.idleMode(Constants.ModuleConstants.angleNeutralMode);
     aConfig.smartCurrentLimit(Constants.HardwareConstants.kNeoCL);
 
     // aConfig.closedLoop.positionWrappingEnabled(true);
@@ -221,7 +221,7 @@ public class Module {
   private void configDriveMotor() {
     SparkFlexConfig dConfig = new SparkFlexConfig();
 
-    dConfig.idleMode(Constants.DriveBaseConstants.driveNeutralMode);
+    dConfig.idleMode(Constants.ModuleConstants.driveNeutralMode);
     dConfig.smartCurrentLimit(Constants.HardwareConstants.kVortexCL);
     
     // dConfig.closedLoop.pid(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD);

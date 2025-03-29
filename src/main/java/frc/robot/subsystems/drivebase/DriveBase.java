@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain;
+package frc.robot.subsystems.drivebase;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -13,13 +13,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveBase extends SubsystemBase {
-
+    //
+    // Drive Variables
+    //
     private static Module.ModuleState targetModuleStates[];
     private final Kinematics m_kinematics;
     private final Gyro m_gyro;
-
     public static Module[] moduleGroup;
 
+    //
+    // Odometry Variables
+    //
     public static double[] odomDeltas = {0, 0, 0, 0};
     public static double[] odomPrevDeltas = {0, 0, 0, 0};
     public static double[] odomAngles = {0, 0, 0, 0};
@@ -56,10 +60,13 @@ public class DriveBase extends SubsystemBase {
 
 
     public DriveBase(Kinematics kinematics, Gyro gyro) {
+        //
+        // Movement
+        //
         m_kinematics = kinematics;
         m_gyro = gyro;
-
         moduleGroup = new Module[4];
+
         for (int i = 0; i < 4; i++) {
             moduleGroup[i] = new Module(i, Constants.ModuleConstants.invertedDrive[i]);
             encoderOffset[i] = moduleGroup[i].getAngleInRadians();
@@ -69,8 +76,12 @@ public class DriveBase extends SubsystemBase {
         targetModuleStates = new Module.ModuleState[4];
 
         for (int i = 0; i < 4; i++)
-            targetModuleStates[i] = new Module.ModuleState(0, Constants.ModuleConstants.motorDegrees[i] * (Math.PI/180));
+            targetModuleStates[i] = new Module.ModuleState(0, Constants.ModuleConstants.angleOffset[i] * (Math.PI/180));
 
+        //
+        // Odometry
+        //
+        // most likely needs to be fixed
         m_sdkOdom = new SwerveDriveOdometry(
             m_skdKine, m_gyro.getRotation2d(), new SwerveModulePosition[] {
                 new SwerveModulePosition(odomDeltas[2], new Rotation2d(odomAngles[2])),
@@ -96,6 +107,9 @@ public class DriveBase extends SubsystemBase {
         m_sdkOdom.resetPosition(m_gyro.getRotation2d(), modulePositions, inverted);
     }
 
+    /**
+     * @param chassisSpeeds the desired chassis speed.
+     */
     public void setDriveSpeed(ChassisSpeeds chassisSpeeds) {
         chassisSpeed_pub[0] = chassisSpeeds.vxMetersPerSecond;
         chassisSpeed_pub[1] = chassisSpeeds.vyMetersPerSecond;
@@ -134,4 +148,10 @@ public class DriveBase extends SubsystemBase {
             });
     }
 
+    //
+    // Get & Set Methods
+    //
+    public Gyro getGyro() {
+        return m_gyro;
+    } 
 }

@@ -9,18 +9,38 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+/**
+ * The subsystem for controlling the coral intake on the robot.
+ */
 public class CoralIntake extends SubsystemBase {
   private final SparkMax intakeMotor;
 
-  /** Creates a new CoralIntake. */
   public CoralIntake() {
     intakeMotor = new SparkMax(Constants.CoralConstants.intakeID, MotorType.kBrushless);   
     motorConfig(); 
   }
+  
+  //
+  // Hardware
+  //
+
+  /**
+   * Configures the motors for the coral intake.
+   */
+  private void motorConfig() {
+    SparkMaxConfig intakeConfig = new SparkMaxConfig();
+    intakeConfig.smartCurrentLimit(Constants.HardwareConstants.kNeoCL);
+    intakeConfig.idleMode(IdleMode.kBrake);
+
+    intakeMotor.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
+
+  
 
   public void setPower(double power) {
     intakeMotor.set(power);
@@ -29,13 +49,6 @@ public class CoralIntake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
-
-  private void motorConfig() {
-    SparkMaxConfig intakeConfig = new SparkMaxConfig();
-    intakeConfig.smartCurrentLimit(Constants.HardwareConstants.kNeoCL);
-
-    intakeMotor.configure(intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
 }

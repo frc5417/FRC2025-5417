@@ -7,6 +7,9 @@ public class Controllers {
     private static final CommandXboxController m_driver = new CommandXboxController(Constants.ControllerConstants.kDriverControllerPort);
     private static final CommandXboxController m_manipulator = new CommandXboxController(Constants.ControllerConstants.kManipulatorControllerPort);
 
+    /**
+     * Methods which relate to the driver controller.
+     */
     public static class DriverInput {
         //
         // Joystick Inputs
@@ -41,8 +44,14 @@ public class Controllers {
         //
         // Button Inputs
         //
+        public static boolean getA() {
+            return m_manipulator.a().getAsBoolean();
+        }
     }
 
+    /**
+     * Methods which relate to the manipulator controller.
+     */
     public static class ManipulatorInput {
         //
         // Joystick Inputs
@@ -74,6 +83,10 @@ public class Controllers {
 
         public static boolean getX() {
             return m_manipulator.a().getAsBoolean();
+        }
+
+        public static boolean getDpadRight() {
+            return m_manipulator.povRight().getAsBoolean();
         }
 
         //
