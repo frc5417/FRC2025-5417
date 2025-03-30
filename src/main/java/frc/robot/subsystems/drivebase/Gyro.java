@@ -7,13 +7,20 @@ package frc.robot.subsystems.drivebase;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Gyro {
+public class Gyro extends SubsystemBase {
   private final Pigeon2 m_pigeon;
 
   public Gyro() {
     m_pigeon = new Pigeon2(Constants.DriveBaseConstants.pigeonID, "canivore");
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Yaw", m_pigeon.getRotation2d().getDegrees());
   }
 
   //

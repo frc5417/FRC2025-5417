@@ -1,157 +1,167 @@
 package frc.robot.subsystems.drivebase;
-import java.util.function.Supplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPLTVController;
+
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveBase extends SubsystemBase {
     //
-    // Drive Variables
+    // Modules
     //
-    private static Module.ModuleState targetModuleStates[];
-    private final Kinematics m_kinematics;
-    private final Gyro m_gyro;
-    public static Module[] moduleGroup;
+    public Module FrontLeft;
+    public Module FrontRight;
+    public Module BackLeft;
+    public Module BackRight;
 
+    private Translation2d m_frontLeftLocation = new Translation2d(Constants.RobotConstants.moduleToOrigin, Constants.RobotConstants.moduleToOrigin);
+    private Translation2d m_frontRightLocation = new Translation2d(Constants.RobotConstants.moduleToOrigin, -Constants.RobotConstants.moduleToOrigin);
+    private Translation2d m_backLeftLocation = new Translation2d(-Constants.RobotConstants.moduleToOrigin, Constants.RobotConstants.moduleToOrigin);
+    private Translation2d m_backRightLocation = new Translation2d(-Constants.RobotConstants.moduleToOrigin, -Constants.RobotConstants.moduleToOrigin);
+    
     //
-    // Odometry Variables
+    // Kinematics
     //
-    public static double[] odomDeltas = {0, 0, 0, 0};
-    public static double[] odomPrevDeltas = {0, 0, 0, 0};
-    public static double[] odomAngles = {0, 0, 0, 0};
-    public static double[] encoderOffset = {0, 0, 0, 0};
-    public static double[] encoderDriveOffset = {0, 0, 0, 0};
+    private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
+        m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation
+    );
+    private ChassisSpeeds robotSpeeds = new ChassisSpeeds();
+    private Gyro m_gyro;
 
-    Field2d field = new Field2d();
-
-    double mod1Prev = 0;
-    double mod1Curr = 0;
-    int counter = 0;
-
-    double tic, toc = 0;
-
-    // might need to change this
-    Translation2d m_frontLeftLocation = new Translation2d(-0.23495, 0.23495);
-    Translation2d m_frontRightLocation = new Translation2d(0.23495, 0.23495);
-    Translation2d m_backLeftLocation = new Translation2d(-0.23495, -0.23495);
-    Translation2d m_backRightLocation = new Translation2d(0.23495, -0.23495);
-
-    SwerveDriveKinematics m_skdKine = new SwerveDriveKinematics(m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
-
-    SwerveDriveOdometry m_sdkOdom;    
-
-    ChassisSpeeds autoSetSpeed = new ChassisSpeeds();
-
-    private double[] chassisSpeed_pub = {0.0, 0.0, 0.0};
-
-    public Supplier<double[]> chassisSpeed_supp = ()->chassisSpeed_pub;
-
-    private String alliancecolor_pub = "IDK";
-
-    public Supplier<String> alliancecolor_supp = ()->alliancecolor_pub;
-
-
-    public DriveBase(Kinematics kinematics, Gyro gyro) {
-        //
-        // Movement
-        //
-        m_kinematics = kinematics;
+    // Odometry
+    public Field2d field = new Field2d();
+    private SwerveDrivePoseEstimator m_kalman;
+    private RobotConfig robotConfig;
+    
+    public DriveBase(Gyro gyro) {
         m_gyro = gyro;
-        moduleGroup = new Module[4];
+        m_gyro.resetYaw();
 
-        for (int i = 0; i < 4; i++) {
-            moduleGroup[i] = new Module(i, Constants.ModuleConstants.invertedDrive[i]);
-            encoderOffset[i] = moduleGroup[i].getAngleInRadians();
-            encoderDriveOffset[i] = moduleGroup[i].integratedDriveEncoder.getPosition();
-        }
+        FrontLeft = new Module(0);
+        FrontRight = new Module(1);
+        BackLeft = new Module(2);
+        BackRight = new Module(3);
 
-        targetModuleStates = new Module.ModuleState[4];
-
-        for (int i = 0; i < 4; i++)
-            targetModuleStates[i] = new Module.ModuleState(0, Constants.ModuleConstants.angleOffset[i] * (Math.PI/180));
+        m_kalman = new SwerveDrivePoseEstimator(m_kinematics, m_gyro.getRotation2d(), new SwerveModulePosition[] {
+            FrontLeft.getPosition(), //fl
+            FrontRight.getPosition(), //fr
+            BackLeft.getPosition(), //bl
+            BackRight.getPosition() //br
+        }, new Pose2d(0, 0, new Rotation2d()));
 
         //
-        // Odometry
+        // Auton
         //
-        // most likely needs to be fixed
-        m_sdkOdom = new SwerveDriveOdometry(
-            m_skdKine, m_gyro.getRotation2d(), new SwerveModulePosition[] {
-                new SwerveModulePosition(odomDeltas[2], new Rotation2d(odomAngles[2])),
-                new SwerveModulePosition(odomDeltas[0], new Rotation2d(odomAngles[0])),
-                new SwerveModulePosition(odomDeltas[3], new Rotation2d(odomAngles[3])),
-                new SwerveModulePosition(odomDeltas[1], new Rotation2d(odomAngles[1]))
-            }); 
-    } 
-
-    public void resetOdometry(Pose2d pose) {
-        Pose2d inverted = new Pose2d(pose.getY(), pose.getX() * -1.0, pose.getRotation());
-        for (int i = 0; i < 4; i++) {
-            moduleGroup[i].setSpeedAndAngle(targetModuleStates[i]);
-            odomDeltas[i] = (((moduleGroup[i].integratedDriveEncoder.getPosition() - encoderDriveOffset[i])/6.12) * (0.102*Math.PI));// - odomPrevDeltas[i];
-            odomAngles[i] = smallestAngle(moduleGroup[i].getAngleInRadians()); //smallestAngle(moduleGroup[i].getAngleInRadians()*(180.0/Math.PI)) * (Math.PI/180.0);
+        try {
+            robotConfig = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        SwerveModulePosition[] modulePositions = new SwerveModulePosition[] {
-                new SwerveModulePosition(odomDeltas[2], new Rotation2d(odomAngles[2])),
-                new SwerveModulePosition(odomDeltas[0], new Rotation2d(odomAngles[0])),
-                new SwerveModulePosition(odomDeltas[3], new Rotation2d(odomAngles[3])),
-                new SwerveModulePosition(odomDeltas[1], new Rotation2d(odomAngles[1]))
-        };
-        m_sdkOdom.resetPosition(m_gyro.getRotation2d(), modulePositions, inverted);
+        AutoBuilder.configure(
+            this::getPose,
+            this::resetPose,
+            this::getRobotSpeeds,
+            (speeds, feedforwards) -> setRobotRelativeSpeeds(speeds),
+            new PPLTVController(0.02),
+            robotConfig,
+            () -> {
+            // Boolean supplier that controls when the path will be mirrored for the red alliance
+            // This will flip the path being followed to the red side of the field.
+            // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
+            },
+            this
+        );
     }
 
-    /**
-     * @param chassisSpeeds the desired chassis speed.
-     */
-    public void setDriveSpeed(ChassisSpeeds chassisSpeeds) {
-        chassisSpeed_pub[0] = chassisSpeeds.vxMetersPerSecond;
-        chassisSpeed_pub[1] = chassisSpeeds.vyMetersPerSecond;
-        chassisSpeed_pub[2] = chassisSpeeds.omegaRadiansPerSecond;
-        
-        targetModuleStates = m_kinematics.getComputedModuleStates(chassisSpeeds);
+    public Pose2d getPose() {
+        return m_kalman.getEstimatedPosition();
     }
 
-    public void resetDrive() {
-        for (int i = 0; i < 4; i++) {
-            moduleGroup[i].resetDriveAngleEncoder();
-        }
+    public void resetPose(Pose2d newPose) {
+        m_kalman.resetPosition(
+            m_gyro.getRotation2d(),
+            new SwerveModulePosition[] {
+                FrontLeft.getPosition(), 
+                FrontRight.getPosition(),
+                BackLeft.getPosition(), 
+                BackRight.getPosition()
+            },
+            newPose);
     }
 
-    public double smallestAngle(double largeAngle) {
-        if(largeAngle > 0) {
-            return largeAngle - Math.floor(Math.abs(largeAngle)/(2*Math.PI)) * (2*Math.PI);
-        } else {
-            return (largeAngle + Math.floor(Math.abs(largeAngle)/(2*Math.PI)) * (2*Math.PI)) + (2*Math.PI);
-        }
+    public void setFieldRelativeSpeeds(ChassisSpeeds speeds) {
+        // Convert to module states
+        SwerveModuleState[] moduleStates = m_kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, m_gyro.getRotation2d()));
+
+        SwerveModuleState frontLeft = moduleStates[0];
+        SwerveModuleState frontRight = moduleStates[1];
+        SwerveModuleState backLeft = moduleStates[2];
+        SwerveModuleState backRight = moduleStates[3];
+
+        FrontLeft.setDesiredState(frontLeft, Constants.DriveBaseConstants.isOpenLoop);
+        FrontRight.setDesiredState(frontRight, Constants.DriveBaseConstants.isOpenLoop);
+        BackLeft.setDesiredState(backLeft, Constants.DriveBaseConstants.isOpenLoop);
+        BackRight.setDesiredState(backRight, Constants.DriveBaseConstants.isOpenLoop);
+    }
+
+    public void setRobotRelativeSpeeds(ChassisSpeeds speeds) {
+        // Convert to module states
+        robotSpeeds = speeds;
+        SwerveModuleState[] moduleStates = m_kinematics.toSwerveModuleStates(speeds);
+
+        SwerveModuleState frontLeft = moduleStates[0];
+        SwerveModuleState frontRight = moduleStates[1];
+        SwerveModuleState backLeft = moduleStates[2];
+        SwerveModuleState backRight = moduleStates[3];
+
+        FrontLeft.setDesiredState(frontLeft, Constants.DriveBaseConstants.isOpenLoop);
+        FrontRight.setDesiredState(frontRight, Constants.DriveBaseConstants.isOpenLoop);
+        BackLeft.setDesiredState(backLeft, Constants.DriveBaseConstants.isOpenLoop);
+        BackRight.setDesiredState(backRight, Constants.DriveBaseConstants.isOpenLoop);
     }
 
     @Override
     public void periodic() {
-        for (int i = 0; i < 4; i++) {
-            moduleGroup[i].setSpeedAndAngle(targetModuleStates[i]);
-            odomDeltas[i] = (((moduleGroup[i].integratedDriveEncoder.getPosition() - encoderDriveOffset[i])/6.12) * (0.102*Math.PI));// - odomPrevDeltas[i];
-            odomAngles[i] = smallestAngle(moduleGroup[i].getAngleInRadians());
-        }
-
-        m_sdkOdom.update(m_gyro.getRotation2d(), new SwerveModulePosition[] {
-                new SwerveModulePosition(Math.abs(odomDeltas[2]), new Rotation2d(odomAngles[2])),
-                new SwerveModulePosition(Math.abs(odomDeltas[0]), new Rotation2d(odomAngles[0])),
-                new SwerveModulePosition(Math.abs(odomDeltas[3]), new Rotation2d(odomAngles[3])),
-                new SwerveModulePosition(Math.abs(odomDeltas[1]), new Rotation2d(odomAngles[1]))
-            });
+        // Get the rotation of the robot from the gyro.
+        m_kalman.update(m_gyro.getRotation2d(), 
+        new SwerveModulePosition[] {
+            FrontLeft.getPosition(), 
+            FrontRight.getPosition(),
+            BackLeft.getPosition(), 
+            BackRight.getPosition()
+        });
+        
+        field.setRobotPose(getPose());
+        SmartDashboard.putData("Field", field);
     }
 
     //
-    // Get & Set Methods
+    // Get and Set Methods
     //
     public Gyro getGyro() {
         return m_gyro;
-    } 
+    }
+
+    public ChassisSpeeds getRobotSpeeds() {
+        return robotSpeeds;
+    }
 }

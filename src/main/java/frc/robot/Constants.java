@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.config.ModuleConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -28,13 +31,26 @@ public final class Constants {
     public static final int kVortexCL = 60; // current limit for Vortexes
   }
 
+  public static class RobotConstants {
+    public static final double robotMass = 45.8128; // in kg
+    public static final double moi = 0;
+    public static final double bumperWidth = 0.8128; // in m
+    public static final double wheelRadius = 0.09525; // in m
+    public static final double wheelCOF = 0; //
+
+    public static final double moduleToOrigin = 0.26035; // meters
+    public static final double moduleRadius = moduleToOrigin * Math.sqrt(2);
+
+    public static final double wheelCircumference = Units.inchesToMeters(4.0) * Math.PI;
+  }
+
   /**
    * Constants which consist of controller-adjacent variables.
    */
   public static class ControllerConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kManipulatorControllerPort = 1;
-    public static final double joystickDeadband = 0.1;
+    public static final double joystickDeadband = 0.15;
   }
 
   //
@@ -58,15 +74,47 @@ public final class Constants {
     public static final Double YPercentage = 1.0;
 
     public static final double maxVelocity = 3.8; // m/s
-    public static final double maxAngularVelocity = 10; //rad/sec
     public static final double maxModuleSpeed = 0.3;
     public static final boolean blueFlipState = false;
 
-    public static final double angleKP = 0.055;
+    public static final double angleKP = 0.02;
     public static final double angleKI = 0.0;
-    public static final double angleKD = 0.0013;
-    public static final double angleKF = 0;
+    public static final double angleKD = 0.023;
+    public static final double angleKF = 0.0;
     public static final double voltageComp = 12;
+
+    /* Drive Motor PID Values */
+    public static final double driveKP = 0.186; 
+    public static final double driveKI = 0.0;
+    public static final double driveKD = 0.002;
+    public static final double driveKF = 0.0;
+    
+    public static final IdleMode angleNeutralMode = IdleMode.kBrake;
+    public static final IdleMode driveNeutralMode = IdleMode.kCoast;
+    public static final double angleGearRatio = (12.8 / 1.0);
+    public static final double driveGearRatio = (6.12 / 1.0);
+
+    /* Drive Motor Conversion Factors */
+    public static final double driveConversionPositionFactor = Constants.RobotConstants.wheelCircumference / driveGearRatio;
+    public static final double driveConversionVelocityFactor = driveConversionPositionFactor / 60.0;
+    public static final double angleConversionFactor = 360.0 / angleGearRatio;
+
+    public static final int angleMaxCurrent = 35;
+    public static final int driveMaxCurrent = 70;
+    public static final boolean invertAngleMotor = false;
+
+    public static final double maxSpeed = 5.35; // m/s
+
+    public static final double maxAngularVelocityDegrees = 720; // deg/s
+    public static final double maxAngularVelocity = Math.toRadians(maxAngularVelocityDegrees); // rad / s
+
+    /* Drive Motor Characterization Values 
+    * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
+    public static final double driveKS = (0.32); 
+    public static final double driveKV = (1.51);
+    public static final double driveKA = (0.27);
+
+    public static final boolean isOpenLoop = false;
   }
 
   /**
@@ -122,8 +170,8 @@ public final class Constants {
     public static final double elevatorMax = 105;
     public static final double elevatorSource = 0.75; //change
     public static final double elevatorL1 = 10; // guestimate
-    public static final double elevatorL2 = 46; // lower
-    public static final double elevatorL3 = 73; // lower
+    public static final double elevatorL2 = 30.09; 
+    public static final double elevatorL3 = 55.4;
     public static final double elevatorL4 = 103.7;
   }
 

@@ -2,11 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.teleop;
+package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.lib.Controllers;
 import frc.robot.Constants;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drivebase.*;
@@ -56,7 +58,7 @@ public class TeleOpDrive extends Command {
     prev_yVel = yVel;
     prev_omega = omega;
 
-    m_driveBase.setDriveSpeed(new ChassisSpeeds(xVel, yVel, omega));
+    m_driveBase.setFieldRelativeSpeeds(new ChassisSpeeds(xVel, yVel, omega));
 
     // Odometry
     if (Controllers.DriverInput.getA()) {
@@ -69,6 +71,7 @@ public class TeleOpDrive extends Command {
     elevatorPos += Constants.ElevatorConstants.kElevatorPercentage * -Controllers.ManipulatorInput.getRightJoyY();
     elevatorPos = MathUtil.clamp(elevatorPos, Constants.ElevatorConstants.elevatorMin, Constants.ElevatorConstants.elevatorMax);
     m_elevator.setElevatorPos(elevatorPos);
+    SmartDashboard.putNumber("Desired Elevator Pos", elevatorPos);
 
     // Set Positions
     if (Controllers.ManipulatorInput.getX()) { // L1
@@ -101,9 +104,7 @@ public class TeleOpDrive extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_driveBase.resetDrive();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
