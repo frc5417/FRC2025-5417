@@ -75,8 +75,8 @@ public class TeleOpDrive extends Command {
 
     // Set Positions
     if (Controllers.ManipulatorInput.getX()) { // L1
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL1);
       // elevatorPos = Constants.ElevatorConstants.elevatorL1;
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL1);
     }
     if (Controllers.ManipulatorInput.getY()) { // L2
       // elevatorPos = Constants.ElevatorConstants.elevatorL2;
@@ -86,7 +86,7 @@ public class TeleOpDrive extends Command {
       // elevatorPos = Constants.ElevatorConstants.elevatorL3;
       m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
     } 
-    if (Controllers.ManipulatorInput.getA()) {
+    if (Controllers.ManipulatorInput.getA()) { // L4
       // elevatorPos = Constants.ElevatorConstants.elevatorL4;
       m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL4);
     }

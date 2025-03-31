@@ -6,9 +6,10 @@ package frc.robot;
 
 import frc.robot.commands.TeleOpDrive;
 import frc.robot.commands.autos.AutonSelect;
-// import frc.robot.commands.*;
+import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drivebase.*;
+// import frc.robot.Commands;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -62,6 +63,9 @@ public class RobotContainer {
    */
   private void registerNamedCommands() {
     // NamedCommands.registerCommand(null, teleOpDrive);
+    NamedCommands.registerCommand("Run Coral", new RunCoral(m_coralIntake, Constants.CoralConstants.kCoralPercent).withTimeout(3));
+    NamedCommands.registerCommand("Run Elevator Minimum", new RunElevator(m_elevator, Constants.ElevatorConstants.elevatorMin).withTimeout(2));
+    NamedCommands.registerCommand("Run Elevator L4", new RunElevator(m_elevator, Constants.ElevatorConstants.elevatorL4).withTimeout(2));
   }
 
   //
