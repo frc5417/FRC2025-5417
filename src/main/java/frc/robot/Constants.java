@@ -50,7 +50,7 @@ public final class Constants {
   public static class ControllerConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kManipulatorControllerPort = 1;
-    public static final double joystickDeadband = 0.15;
+    public static final double joystickDeadband = 0.10;
   }
 
   //
@@ -84,15 +84,15 @@ public final class Constants {
     public static final double voltageComp = 12;
 
     /* Drive Motor PID Values */
-    public static final double driveKP = 0.20; // 0.186 // 0.180
-    public static final double driveKI = 0.0;
-    public static final double driveKD = 0.013; // 0.16
+    public static final double driveKP = 0.30; // 0.186 // 0.180
+    public static final double driveKI = 0.00001;
+    public static final double driveKD = 0.002; // 0.16
     public static final double driveKF = 0.0;
     
     public static final IdleMode angleNeutralMode = IdleMode.kBrake;
-    public static final IdleMode driveNeutralMode = IdleMode.kCoast;
+    public static final IdleMode driveNeutralMode = IdleMode.kBrake;
     public static final double angleGearRatio = (12.8 / 1.0);
-    public static final double driveGearRatio = (6.12 / 1.0);
+    public static final double driveGearRatio = (6.75 / 1.0);
 
     /* Drive Motor Conversion Factors */
     public static final double driveConversionPositionFactor = Constants.RobotConstants.wheelCircumference / driveGearRatio;
