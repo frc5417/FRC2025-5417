@@ -175,6 +175,10 @@ public class Module extends SubsystemBase {
     return angleMotor.getMotorTemperature();
   }
 
+  public double getAngleOmega() {
+    return (integratedDriveEncoder.getVelocity() * 2 * Math.PI) / 60;
+  }
+
   @Override
   public void periodic() {
     resetToAbsolute();
@@ -182,5 +186,6 @@ public class Module extends SubsystemBase {
     // Telemetry
     SmartDashboard.putNumber(modulePos + " Angle", OnboardModuleState.normalizeDegrees(getAnglePosDegrees()));
     SmartDashboard.putNumber(modulePos + " Speed", Math.abs(getDriveSpeed()));
+    SmartDashboard.putNumber(modulePos + " Omega", getAngleOmega());
   }
 }

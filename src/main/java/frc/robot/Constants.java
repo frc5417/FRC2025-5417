@@ -84,9 +84,9 @@ public final class Constants {
     public static final double voltageComp = 12;
 
     /* Drive Motor PID Values */
-    public static final double driveKP = 0.186; 
+    public static final double driveKP = 0.2; // 0.186 // 0.180
     public static final double driveKI = 0.0;
-    public static final double driveKD = 0.002;
+    public static final double driveKD = 0.16; // 0.002
     public static final double driveKF = 0.0;
     
     public static final IdleMode angleNeutralMode = IdleMode.kBrake;
@@ -110,9 +110,9 @@ public final class Constants {
 
     /* Drive Motor Characterization Values 
     * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
-    public static final double driveKS = (0.32); 
-    public static final double driveKV = (1.51);
-    public static final double driveKA = (0.27);
+    public static final double driveKS = (0.32); // 0.32
+    public static final double driveKV = (1.51); // 1.51
+    public static final double driveKA = (0.27); // 0.27
 
     public static final boolean isOpenLoop = false;
   }
