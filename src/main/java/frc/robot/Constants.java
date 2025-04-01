@@ -84,9 +84,9 @@ public final class Constants {
     public static final double voltageComp = 12;
 
     /* Drive Motor PID Values */
-    public static final double driveKP = 0.2; // 0.186 // 0.180
+    public static final double driveKP = 0.25; // 0.186 // 0.180
     public static final double driveKI = 0.0;
-    public static final double driveKD = 0.16; // 0.002
+    public static final double driveKD = 0.001; // 0.16
     public static final double driveKF = 0.0;
     
     public static final IdleMode angleNeutralMode = IdleMode.kBrake;
