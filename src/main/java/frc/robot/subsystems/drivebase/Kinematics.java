@@ -1,8 +1,9 @@
 package frc.robot.subsystems.drivebase;
 
 import frc.robot.Constants;
-
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 public class Kinematics {
     //
@@ -162,6 +163,33 @@ public class Kinematics {
     }
 
     return targetModuleStates;
+  }
+
+  //
+  // SDK <-> Custom Kinematics
+  //
+  public Module.ModuleState[] chassisSpeedToCustom(SwerveModuleState... sdkModuleStates) {
+    Module.ModuleState[] moduleStates = new Module.ModuleState[4];
+
+    for (int i = 0; i < 4; i++) {
+      moduleStates[i] = new Module.ModuleState(sdkModuleStates[i]);
+    }
+
+    return moduleStates;
+  }
+
+  public SwerveModuleState[] customToChassisSpeed(Module.ModuleState... moduleStates) {
+    SwerveModuleState[] sdkModuleStates = new SwerveModuleState[4];
+
+    for (int i = 0; i < 4; i++) {
+      Module.ModuleState mod = moduleStates[i];
+
+      double speed = mod.getVel();
+      Rotation2d rot = new Rotation2d(mod.getDir());
+      sdkModuleStates[i] = new SwerveModuleState(speed, rot);
+    }
+
+    return sdkModuleStates;
   }
     
 }

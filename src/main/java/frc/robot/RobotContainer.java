@@ -4,12 +4,12 @@
 
 package frc.robot;
 
+import frc.robot.commands.TeleOpDrive;
+import frc.robot.commands.autos.AutonSelect;
 // import frc.robot.commands.*;
-import frc.robot.commands.teleop.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drivebase.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -23,15 +23,20 @@ public class RobotContainer {
   //
   // Subsystems
   //
+  /* DriveBase */
   private static Gyro m_gyro = new Gyro();
   private static Kinematics m_kinematics = new Kinematics(m_gyro);
   private static DriveBase m_driveBase = new DriveBase(m_kinematics, m_gyro);
 
+  /* Other */
   private static Elevator m_elevator = new Elevator();
   private static CoralIntake m_coralIntake = new CoralIntake();
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  
+  //
+  // Commands
+  //
   public static TeleOpDrive teleOpDrive = new TeleOpDrive(m_driveBase, m_elevator, m_coralIntake);
+  private static AutonSelect autonSelect = new AutonSelect();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -65,6 +70,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Commands.none();
+    return autonSelect.getAuto();
   }
 }

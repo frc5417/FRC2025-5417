@@ -22,7 +22,8 @@ public final class Constants {
   /**
    * Constants which are utilized for general-hardware constants.
    */
-  public static class HardwareConstants {
+  public static class MechanicalConstants {
+    /* Current */
     public static final int kNeo550CL = 20; // current limit for NEO 550s
     public static final int kNeoCL = 50; // current limit for NEOs
     public static final int kVortexCL = 60; // current limit for Vortexes
@@ -46,16 +47,16 @@ public final class Constants {
    * drive base.
    */
   public static class DriveBaseConstants {
-    // Gyro
+    /* Gyro */
     public static final int pigeonID = 59;
 
-    // Kinematics
+    /* Kinematics */
     public static final boolean kIsFieldCentric = true;
 
-    // Module
+    /* Modules */
     public static final Double angularPercentage = 0.7;
-    public static final Double XPercentage = 1.0;
-    public static final Double YPercentage = 1.0;
+    public static final Double XPercentage = 0.5; // might need to increase
+    public static final Double YPercentage = 0.5; // might need to increase
 
     public static final double maxVelocity = 3.8; // m/s
     public static final double maxAngularVelocity = 10; //rad/sec
@@ -73,7 +74,7 @@ public final class Constants {
    * Constants that relate to individual modules or 'global' variables (consistent constants between modules).
    */
   public static class ModuleConstants {
-    // Module-Specific variables
+    /* Module-specific variables */
     public static final int[] driveMotorIDs = {11, 21, 31, 41};
     public static final boolean[] invertedDrive = {true, true, true, true};
     public static final int[] angleMotorIDs = {12, 22, 32, 42};
@@ -83,12 +84,14 @@ public final class Constants {
 
     public static final double degTolerance = 0.75;
 
+    /* Angle Motor */
     public static final IdleMode angleNeutralMode = IdleMode.kBrake;
-    public static final IdleMode driveNeutralMode = IdleMode.kCoast;
-
     public static final double kP = 0.50;
     public static final double kI = 0;
     public static final double kD = 0.013;
+    
+    /* Drive Motor */
+    public static final IdleMode driveNeutralMode = IdleMode.kCoast;
   }
 
   //
@@ -99,31 +102,31 @@ public final class Constants {
    * Constants which relate to the elevator subsystem.
    */
   public static class ElevatorConstants {
-    // Hardware + Mechanical
+    /* Hardware and Mechanical */
     public static final int elevatorParentId = 55;
     public static final int elevatorChildId = 52;
     public static final boolean elevatorChildInvert = true;
     public static final double shaftRadius = 0.0127; // .5 inches -> m
     public static final double kElevatorPercentage = 1.5;
 
-    // Feedforward
+    /* Feedforward */
     public static final double feedKS = 0.55;
     public static final double feedKV = 0.13;
     public static final double feedKA = 0;
 
-    // PID 
+    /* PID */
     public static final double elevatorkP = 0.2; //0.4 
     public static final double elevatorkI = 0;
     public static final double elevatorkD = 0;
     public static final double elevatorkF = 0;
 
-    // Set Position Values
+    /* Set Position Values */
     public static final double elevatorMin = 0.75;
     public static final double elevatorMax = 105;
-    public static final double elevatorSource = 0.75; //change
-    public static final double elevatorL1 = 10; // guestimate
-    public static final double elevatorL2 = 46; // lower
-    public static final double elevatorL3 = 73; // lower
+    public static final double elevatorSource = 0.75;
+    public static final double elevatorL1 = 10; 
+    public static final double elevatorL2 = 30.09;
+    public static final double elevatorL3 = 55.4;
     public static final double elevatorL4 = 103.7;
   }
 
@@ -131,7 +134,7 @@ public final class Constants {
    * Constants which relate to the the coral intake subsystem.
    */
   public static class CoralConstants {
-    // Hardware
+    /* Hardware */
     public static final int intakeID = 51;
     public static final int sensorID = 0; // change
     public static final double kCoralPercent = 0.5;

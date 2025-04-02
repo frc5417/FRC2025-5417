@@ -2,11 +2,12 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.teleop;
+package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.lib.Controllers;
 import frc.robot.Constants;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drivebase.*;
@@ -56,9 +57,12 @@ public class TeleOpDrive extends Command {
     prev_yVel = yVel;
     prev_omega = omega;
 
-    m_driveBase.setDriveSpeed(new ChassisSpeeds(xVel, yVel, omega));
+    m_driveBase.setFieldRelativeSpeed(new ChassisSpeeds(
+          Constants.DriveBaseConstants.XPercentage * xVel, 
+          Constants.DriveBaseConstants.YPercentage * yVel, 
+          Constants.DriveBaseConstants.angularPercentage * omega));
 
-    // Odometry
+    /* Gyro */
     if (Controllers.DriverInput.getA()) {
       m_driveBase.getGyro().resetYaw();
     }
@@ -70,7 +74,7 @@ public class TeleOpDrive extends Command {
     elevatorPos = MathUtil.clamp(elevatorPos, Constants.ElevatorConstants.elevatorMin, Constants.ElevatorConstants.elevatorMax);
     m_elevator.setElevatorPos(elevatorPos);
 
-    // Set Positions
+    /* Set Positions */
     if (Controllers.ManipulatorInput.getX()) { // L1
       m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL1);
       // elevatorPos = Constants.ElevatorConstants.elevatorL1;

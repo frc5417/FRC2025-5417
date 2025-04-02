@@ -16,9 +16,13 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.ModuleMath;
 import frc.robot.Constants;
 
-public class Module {
+public class Module extends SubsystemBase {
   /** Creates a new Module. */
 
   public SparkMax angleMotor;
@@ -82,6 +86,93 @@ public class Module {
     // }
   }
 
+  //
+  // Hardware-related Methods
+  //
+
+  private void configAngleMotor() {
+    SparkMaxConfig aConfig = new SparkMaxConfig();
+
+    // aConfig.inverted(Constants.Swerve.invertAngleMotor);
+    aConfig.idleMode(Constants.ModuleConstants.angleNeutralMode);
+    aConfig.smartCurrentLimit(Constants.MechanicalConstants.kNeoCL);
+
+    // aConfig.closedLoop.positionWrappingEnabled(true);
+    // aConfig.closedLoop.positionWrappingInputRange(0, 360);
+
+    // aConfig.closedLoop.pid(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD);
+    // aConfig.closedLoop.velocityFF(Constants.Swerve.angleKF);
+    // aConfig.voltageCompensation(Constants.Swerve.voltageComp); 
+
+    // aConfig.encoder.positionConversionFactor(Constants.Swerve.angleConversionFactor);
+
+    angleMotor.configure(aConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
+
+  private void configDriveMotor() {
+    SparkFlexConfig dConfig = new SparkFlexConfig();
+
+    dConfig.idleMode(Constants.ModuleConstants.driveNeutralMode);
+    dConfig.smartCurrentLimit(Constants.MechanicalConstants.kVortexCL);
+    
+    // dConfig.closedLoop.pid(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD);
+    // dConfig.closedLoop.velocityFF(Constants.Swerve.driveKF);
+    // dConfig.voltageCompensation(Constants.Swerve.voltageComp);
+
+    // dConfig.encoder.positionConversionFactor(Constants.Swerve.driveConversionPositionFactor);
+    // dConfig.encoder.velocityConversionFactor(Constants.Swerve.driveConversionVelocityFactor);
+
+    driveMotor.configure(dConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber(modulePos + " Angle", ModuleMath.normalizeDegrees(cnt));
+    SmartDashboard.putNumber(modulePos + " Speed", Math.abs(getDriveVelocity()));
+  }
+
+  public double setDriveSpeed(double speed) {
+    int invertMultiplier = 1;
+    if (invertDriveSpeed) { 
+      invertMultiplier = -1; 
+    }
+
+    double x = speed * invertMultiplier;
+    
+    driveMotor.set(x);
+    return x;
+  }
+
+  public double setAngle(double angle_in_rad) {
+    
+    // Rotation2d desiredState = Rotation2d.fromRadians(MathUtil.inputModulus(angle_in_rad, -Math.PI/2, Math.PI/2));
+    // var delta = desiredState.minus(Rotation2d.fromRadians(MathUtil.inputModulus(this.getAngleInRadians(), -Math.PI/2, Math.PI/2)));
+    // if (Math.abs(delta.getDegrees()) > 90.0) {
+    //   invertDrive();
+    //   desiredState = desiredState.rotateBy(Rotation2d.fromDegrees(180));
+    // } 
+    // angle_in_rad = desiredState.getRadians();
+    // if (angle_in_rad < 0) {
+    //   angle_in_rad += 2 * Math.PI;
+    // }
+
+
+    double x = (angle_in_rad);
+
+    pid.setSetpoint(angle_in_rad);
+
+    // String name = "Mod" + String.valueOf(this.moduleNum);
+    // SmartDashboard.putNumber(name, this.getAngleInRadians());
+
+    if (Math.abs(this.pid.getSetpoint() - this.getRadians()) > (Constants.ModuleConstants.degTolerance*(Math.PI/180))) {
+      this.angleMotor.set(MathUtil.clamp(this.pid.calculate(this.getRadians()), -1, 1));
+    } else {
+      this.angleMotor.set(0.0);
+    }
+
+    return x;
+  }
+
   public void setSpeedAndAngle(ModuleState targetState) {
     double x = setAngle(targetState.getDir());
     double y = setDriveSpeed(targetState.getVel());
@@ -118,28 +209,20 @@ public class Module {
     return normalizedAngle;
   }
 
-  public double setDriveSpeed(double speed) {
-    int invertMultiplier = 1;
-    if (invertDriveSpeed) { 
-      invertMultiplier = -1; 
-    }
 
-    double x = speed * invertMultiplier;
-    
-    driveMotor.set(x);
-    return x;
-  }
-
+  //
+  // Encoder Methods
+  //
   /**
    * Gets the current absolute position (in revolutions) of the CANCoder, subtracts it from the 
    * starting motor degrees, and then converts into radians. 
    * @return
    */
-  public double getAngleInRadians() { 
+  public double getRadians() { 
     return (_CANCoder.getAbsolutePosition().getValueAsDouble() * 360.0 - Constants.ModuleConstants.angleOffset[this.moduleNum]) * (Math.PI/180.0);
   }
 
-  public double getAngle() {
+  public double getDegrees() {
     return _CANCoder.getAbsolutePosition().getValueAsDouble() * 360.0;
   }
 
@@ -151,43 +234,9 @@ public class Module {
     return integratedAngleEncoder.getVelocity();
   }
 
-  public String getModulePos() {
-    return modulePos;
-  }
-
   // private void invertDrive() {
   //   invertDriveSpeed = invertDriveSpeed == false;
   // }
-
-  public double setAngle(double angle_in_rad) {
-    
-    // Rotation2d desiredState = Rotation2d.fromRadians(MathUtil.inputModulus(angle_in_rad, -Math.PI/2, Math.PI/2));
-    // var delta = desiredState.minus(Rotation2d.fromRadians(MathUtil.inputModulus(this.getAngleInRadians(), -Math.PI/2, Math.PI/2)));
-    // if (Math.abs(delta.getDegrees()) > 90.0) {
-    //   invertDrive();
-    //   desiredState = desiredState.rotateBy(Rotation2d.fromDegrees(180));
-    // } 
-    // angle_in_rad = desiredState.getRadians();
-    // if (angle_in_rad < 0) {
-    //   angle_in_rad += 2 * Math.PI;
-    // }
-
-
-    double x = (angle_in_rad);
-
-    pid.setSetpoint(angle_in_rad);
-
-    // String name = "Mod" + String.valueOf(this.moduleNum);
-    // SmartDashboard.putNumber(name, this.getAngleInRadians());
-
-    if (Math.abs(this.pid.getSetpoint() - this.getAngleInRadians()) > (Constants.ModuleConstants.degTolerance*(Math.PI/180))) {
-      this.angleMotor.set(MathUtil.clamp(this.pid.calculate(this.getAngleInRadians()), -1, 1));
-    } else {
-      this.angleMotor.set(0.0);
-    }
-
-    return x;
-  }
 
   public void resetDriveAngleEncoder() {
     _CANCoder.close();
@@ -199,41 +248,6 @@ public class Module {
   //   return canConfig;
   // }
 
-  private void configAngleMotor() {
-    SparkMaxConfig aConfig = new SparkMaxConfig();
-
-    // aConfig.inverted(Constants.Swerve.invertAngleMotor);
-    aConfig.idleMode(Constants.ModuleConstants.angleNeutralMode);
-    aConfig.smartCurrentLimit(Constants.HardwareConstants.kNeoCL);
-
-    // aConfig.closedLoop.positionWrappingEnabled(true);
-    // aConfig.closedLoop.positionWrappingInputRange(0, 360);
-
-    // aConfig.closedLoop.pid(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD);
-    // aConfig.closedLoop.velocityFF(Constants.Swerve.angleKF);
-    // aConfig.voltageCompensation(Constants.Swerve.voltageComp); 
-
-    // aConfig.encoder.positionConversionFactor(Constants.Swerve.angleConversionFactor);
-
-    angleMotor.configure(aConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-  }
-
-  private void configDriveMotor() {
-    SparkFlexConfig dConfig = new SparkFlexConfig();
-
-    dConfig.idleMode(Constants.ModuleConstants.driveNeutralMode);
-    dConfig.smartCurrentLimit(Constants.HardwareConstants.kVortexCL);
-    
-    // dConfig.closedLoop.pid(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD);
-    // dConfig.closedLoop.velocityFF(Constants.Swerve.driveKF);
-    // dConfig.voltageCompensation(Constants.Swerve.voltageComp);
-
-    // dConfig.encoder.positionConversionFactor(Constants.Swerve.driveConversionPositionFactor);
-    // dConfig.encoder.velocityConversionFactor(Constants.Swerve.driveConversionVelocityFactor);
-
-    driveMotor.configure(dConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-  }
-
   public static class ModuleState {
     private final double m_vel;
     private final double m_dir;
@@ -241,6 +255,15 @@ public class Module {
     public ModuleState(double vel, double dir) {
         m_vel = vel;
         m_dir = dir;
+    }
+
+    /**
+     * Converts individual SwerveModuleStates into custom kinematics ModuleStates
+     * @param modState
+     */
+    public ModuleState(SwerveModuleState modState) {
+      m_vel = modState.speedMetersPerSecond;
+      m_dir = modState.angle.getRadians();
     }
 
     public double getVel() {

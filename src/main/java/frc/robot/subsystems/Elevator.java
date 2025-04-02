@@ -58,7 +58,7 @@ public class Elevator extends SubsystemBase {
     SparkFlexConfig childConfig = new SparkFlexConfig();
 
     parentConfig.idleMode(IdleMode.kBrake);
-    parentConfig.smartCurrentLimit(Constants.HardwareConstants.kVortexCL);
+    parentConfig.smartCurrentLimit(Constants.MechanicalConstants.kVortexCL);
     parentConfig.closedLoop.pidf(Constants.ElevatorConstants.elevatorkP, Constants.ElevatorConstants.elevatorkI, 
         Constants.ElevatorConstants.elevatorkD, Constants.ElevatorConstants.elevatorkF);
     elevatorParent.configure(parentConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -112,6 +112,7 @@ public class Elevator extends SubsystemBase {
    * @return the linear velocity of the elevator.
    */
   public double getLinearVelocity() {
+    // needs the radius in the calculations
     double omega = (elevatorParentEncoder.getVelocity() * 2 * Math.PI) / 60; // conversion from RPM -> ms^-1
     return Constants.ElevatorConstants.shaftRadius * omega; // rotational kinematics -> linear
   }
