@@ -36,7 +36,7 @@ public class L4Auton extends SequentialCommandGroup {
       new InstantCommand(() -> 
           m_driveBase.setFieldRelativeSpeed(new ChassisSpeeds(-.2, 0, 0))
       ),
-      new WaitCommand(3),
+      new WaitCommand(2.5),
 
       // go back from coral
       new InstantCommand(() ->

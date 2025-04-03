@@ -49,11 +49,15 @@ public class Controllers {
         // Button Inputs
         //
         public static boolean getA() {
-            return m_manipulator.a().getAsBoolean();
+            return m_driver.a().getAsBoolean();
         }
 
         public static boolean getY() {
-            return m_manipulator.y().getAsBoolean();
+            return m_driver.y().getAsBoolean();
+        }
+
+        public static boolean getDpadDown() {
+            return m_driver.povDown().getAsBoolean();
         }
     }
 

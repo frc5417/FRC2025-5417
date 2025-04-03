@@ -84,7 +84,7 @@ public final class Constants {
     public static final int[] driveMotorIDs = {11, 21, 31, 41};
     public static final boolean[] invertedDrive = {true, true, true, true};
     public static final int[] angleMotorIDs = {12, 22, 32, 42};
-    public static final int[] angleOffset = {0, 0, 0, 0}; // offset for angle motors by degrees
+    public static final double[] angleOffset = {0, 0, 0, 0}; // offset for angle motors by degrees
     public static final int[] cancoderIDs = {13, 23, 33, 43};
     public static final String[] modulePosition = {"Front Left", "Front Right", "Back Left", "Back Right"};
 

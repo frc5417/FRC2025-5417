@@ -7,6 +7,9 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.Controllers;
 import frc.robot.Constants;
 import frc.robot.subsystems.*;
@@ -14,6 +17,7 @@ import frc.robot.subsystems.drivebase.*;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class TeleOpDrive extends Command {
+  /* Subsystems */
   private DriveBase m_driveBase;
   private Elevator m_elevator;
   private CoralIntake m_coral; // negative to intake
@@ -24,11 +28,16 @@ public class TeleOpDrive extends Command {
   double prev_xVel = 0;
   double prev_yVel = 0;
   double prev_omega = 0;
+  private boolean acceptInput;
+
+  /* Commands */
+  private ParallelRaceGroup alignL4 = new RunDriveBaseRobot(m_driveBase, -.1, 0, 0).withTimeout(.1);
 
   // 
   // Elevator Variables
   //
   double elevatorPos = 0;
+
 
   /** Creates a new TeleOpDrive. */
   public TeleOpDrive(DriveBase driveBase, Elevator elevator, CoralIntake coralIntake) {
@@ -57,10 +66,19 @@ public class TeleOpDrive extends Command {
     prev_yVel = yVel;
     prev_omega = omega;
 
-    m_driveBase.setFieldRelativeSpeed(new ChassisSpeeds(
-          Constants.DriveBaseConstants.XPercentage * xVel, 
-          Constants.DriveBaseConstants.YPercentage * yVel, 
-          Constants.DriveBaseConstants.angularPercentage * omega));
+    /* Autonomous Routine */
+    if (Controllers.DriverInput.getDpadDown()) {
+      alignL4.schedule();
+    } 
+    
+    /* Driver Controlled */
+    acceptInput = checkForRunningCommands();
+    if (acceptInput) {
+      m_driveBase.setFieldRelativeSpeed(new ChassisSpeeds(
+            Constants.DriveBaseConstants.XPercentage * xVel, 
+            Constants.DriveBaseConstants.YPercentage * yVel, 
+            Constants.DriveBaseConstants.angularPercentage * omega));
+    }
 
     // Controllers.DriverInput.getController().povUp().whileTrue(new RunToAngle(m_driveBase, 0));
 
@@ -81,24 +99,24 @@ public class TeleOpDrive extends Command {
 
     /* Set Positions */
     if (Controllers.ManipulatorInput.getX()) { // L1
-      // elevatorPos = Constants.ElevatorConstants.elevatorL1;
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL1);
+      elevatorPos = Constants.ElevatorConstants.elevatorL1;
+      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL1);
     }
     if (Controllers.ManipulatorInput.getY()) { // L2
-      // elevatorPos = Constants.ElevatorConstants.elevatorL2;
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
+      elevatorPos = Constants.ElevatorConstants.elevatorL2;
+      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL2);
     }
     if (Controllers.ManipulatorInput.getB()) { // L3
-      // elevatorPos = Constants.ElevatorConstants.elevatorL3;
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
+      elevatorPos = Constants.ElevatorConstants.elevatorL3;
+      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL3);
     } 
     if (Controllers.ManipulatorInput.getA()) {
-      // elevatorPos = Constants.ElevatorConstants.elevatorL4;
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL4);
+      elevatorPos = Constants.ElevatorConstants.elevatorL4;
+      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL4);
     }
     if (Controllers.ManipulatorInput.getDpadRight()) { // Source
-      // elevatorPos = Constants.ElevatorConstants.elevatorSource;
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
+      elevatorPos = Constants.ElevatorConstants.elevatorSource;
+      // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorSource);
     }
 
     //
@@ -118,6 +136,19 @@ public class TeleOpDrive extends Command {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  /**
+   * 
+   */
+  private boolean checkForRunningCommands() {
+    boolean output = true;
+    if (alignL4.isFinished() == false) {
+      // if alignL4 is not finished
+      output = false;
+    }
+
+    return output;
   }
 }
 

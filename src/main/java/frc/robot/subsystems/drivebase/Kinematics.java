@@ -150,6 +150,7 @@ public class Kinematics {
     if (isFieldCentric) {
       this.heading = this.m_gyro.getRotation2d().getDegrees();
       this.heading *= Math.PI / 180;
+      this.heading = normalizeRadian(heading);
     } else {
       this.heading = 0;
     }

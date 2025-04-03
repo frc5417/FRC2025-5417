@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.drivebase.DriveBase;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class RunDriveBase extends Command {
+public class RunDriveBaseRobot extends Command {
   /* Subsystems */
   private final DriveBase m_driveBase;
 
@@ -18,7 +18,7 @@ public class RunDriveBase extends Command {
   private boolean terminate;
 
   /** Creates a new RunDriveBase. */
-  public RunDriveBase(DriveBase driveBase, double x, double y, double omega) {
+  public RunDriveBaseRobot(DriveBase driveBase, double x, double y, double omega) {
     /* Subsystems */
     m_driveBase = driveBase;
 
@@ -30,7 +30,7 @@ public class RunDriveBase extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_driveBase.setFieldRelativeSpeed(speeds);
+    m_driveBase.setRobotRelativeSpeed(speeds);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,6 +41,7 @@ public class RunDriveBase extends Command {
   @Override
   public void end(boolean interrupted) {
     m_driveBase.setFieldRelativeSpeed(new ChassisSpeeds(0,0,0));
+    terminate = true;
   }
 
   // Returns true when the command should end.

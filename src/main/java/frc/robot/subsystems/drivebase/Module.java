@@ -45,6 +45,9 @@ public class Module extends SubsystemBase {
   private CANcoder _CANCoder;
   // private CANcoderConfigurator configurator;
 
+  /* Telemetry */
+  private double speedPower;
+
   int cnt = 0;
 
   public Module(int module, boolean invertedDrive) {
@@ -132,7 +135,7 @@ public class Module extends SubsystemBase {
 
     /* Telemetry */
     SmartDashboard.putNumber(modulePos + " Angle", ModuleMath.normalizeDegrees(getDegrees()));
-    SmartDashboard.putNumber(modulePos + " Speed", getDriveVelocity());
+    SmartDashboard.putNumber(modulePos + " Speed", speedPower);
   }
 
   public double setDriveSpeed(double speed) {
@@ -179,7 +182,7 @@ public class Module extends SubsystemBase {
 
   public void setSpeedAndAngle(ModuleState targetState) {
     double x = setAngle(targetState.getDir());
-    double y = setDriveSpeed(targetState.getVel());
+    speedPower = setDriveSpeed(targetState.getVel());
 
     // if (++cnt % 50 == 0) {
     //   System.out.printf("Set module %d angle to %f, speed to %f\n", this.moduleNum, x, y);
@@ -227,7 +230,7 @@ public class Module extends SubsystemBase {
   }
 
   public double getDegrees() {
-    return _CANCoder.getAbsolutePosition().getValueAsDouble() * 360.0;
+    return _CANCoder.getAbsolutePosition().getValueAsDouble() * 360.0 - Constants.ModuleConstants.angleOffset[this.moduleNum];
   }
 
   public double getDriveVelocity() {
