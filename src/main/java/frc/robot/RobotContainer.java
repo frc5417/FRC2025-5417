@@ -6,9 +6,10 @@ package frc.robot;
 
 import frc.robot.commands.TeleOpDrive;
 import frc.robot.commands.autos.AutonSelect;
-// import frc.robot.commands.*;
+import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.drivebase.*;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -42,6 +43,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    registerNamedCommands();
 
     m_gyro.resetYaw();
   }
@@ -60,7 +62,6 @@ public class RobotContainer {
   }
 
   private void registerNamedCommands() {
-    // NamedCommands.registerCommand(null, teleOpDrive);
     NamedCommands.registerCommand("Run Coral", new RunCoral(m_coralIntake, Constants.CoralConstants.kCoralPercent).withTimeout(3));
     NamedCommands.registerCommand("Run Elevator Minimum", new RunElevator(m_elevator, Constants.ElevatorConstants.elevatorMin).withTimeout(3));
     NamedCommands.registerCommand("Run Elevator L3", new RunElevator(m_elevator, Constants.ElevatorConstants.elevatorL3).withTimeout(3));

@@ -5,15 +5,30 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 /**
  * Class for choosing an autonomous command in Elastic, Shuffleboard, SmartDashboard, etc.
  */
 public class AutonSelect {
-    private final SendableChooser<Command> autoSelection;
+    private SendableChooser<Command> autoSelection;
+    private final boolean is2025 = true;
 
     public AutonSelect() {
-        autoSelection = AutoBuilder.buildAutoChooser();
+        try {
+            // Pathplanner configured
+            autoSelection = AutoBuilder.buildAutoChooserWithOptionsModifier(
+                (stream) -> is2025 ? stream.filter(auto -> auto.getName().startsWith("2025"))
+                  : stream
+              );
+        } catch (RuntimeException e) {
+            // No pathplanner configured
+            e.printStackTrace();
+
+            /* Set auton to none */
+            autoSelection = new SendableChooser<>();
+            autoSelection.setDefaultOption("None", Commands.none());
+        }
         initTelemetry();
     }
     

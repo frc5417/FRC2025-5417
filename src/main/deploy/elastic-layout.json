@@ -269,7 +269,7 @@
             }
           },
           {
-            "title": "BL ¸",
+            "title": "BL ï¿½",
             "x": 0.0,
             "y": 0.0,
             "width": 128.0,
@@ -308,7 +308,7 @@
             }
           },
           {
-            "title": "BR ¸",
+            "title": "BR ï¿½",
             "x": 0.0,
             "y": 128.0,
             "width": 128.0,
@@ -347,7 +347,7 @@
             }
           },
           {
-            "title": "FL ¸",
+            "title": "FL ï¿½",
             "x": 0.0,
             "y": 256.0,
             "width": 128.0,
@@ -404,7 +404,7 @@
             }
           },
           {
-            "title": "FR ¸",
+            "title": "FR ï¿½",
             "x": 0.0,
             "y": 384.0,
             "width": 128.0,
@@ -434,7 +434,7 @@
             "properties": {
               "topic": "/SmartDashboard/Field",
               "period": 0.06,
-              "field_game": "Crescendo",
+              "field_game": "Reefscape",
               "robot_width": 0.85,
               "robot_length": 0.85,
               "show_other_objects": true,

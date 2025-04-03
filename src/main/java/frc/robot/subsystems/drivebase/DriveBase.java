@@ -92,7 +92,6 @@ public class DriveBase extends SubsystemBase {
             
         /* Auton (PathPlanner) */
         m_pathPlanner = new PathPlanner(this);
-        m_pathPlanner.initialize();
 
     } 
 
