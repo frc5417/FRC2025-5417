@@ -62,11 +62,14 @@ public class TeleOpDrive extends Command {
           Constants.DriveBaseConstants.YPercentage * yVel, 
           Constants.DriveBaseConstants.angularPercentage * omega));
 
-    Controllers.DriverInput.getController().povUp().whileTrue(new RunToAngle(m_driveBase, 0));
+    // Controllers.DriverInput.getController().povUp().whileTrue(new RunToAngle(m_driveBase, 0));
 
     /* Gyro */
     if (Controllers.DriverInput.getA()) {
       m_driveBase.getGyro().resetYaw();
+    }
+    if (Controllers.DriverInput.getY()) {
+      m_driveBase.getKinematics().setIsFieldCentric(false);
     }
 
     //
@@ -78,8 +81,8 @@ public class TeleOpDrive extends Command {
 
     /* Set Positions */
     if (Controllers.ManipulatorInput.getX()) { // L1
-      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL1);
       // elevatorPos = Constants.ElevatorConstants.elevatorL1;
+      m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorL1);
     }
     if (Controllers.ManipulatorInput.getY()) { // L2
       // elevatorPos = Constants.ElevatorConstants.elevatorL2;

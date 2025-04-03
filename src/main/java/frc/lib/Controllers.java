@@ -51,6 +51,10 @@ public class Controllers {
         public static boolean getA() {
             return m_manipulator.a().getAsBoolean();
         }
+
+        public static boolean getY() {
+            return m_manipulator.y().getAsBoolean();
+        }
     }
 
     /**

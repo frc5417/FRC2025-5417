@@ -75,6 +75,7 @@ public class DriveBase extends SubsystemBase {
             encoderDriveOffset[i] = moduleGroup[i].integratedDriveEncoder.getPosition();
         }
 
+        /* Module States */
         targetModuleStates = new Module.ModuleState[4];
 
         for (int i = 0; i < 4; i++)
@@ -82,12 +83,20 @@ public class DriveBase extends SubsystemBase {
 
         /* Odometry */
         // most likely needs to be fixed
+        // m_sdkOdom = new SwerveDriveOdometry(
+        //     m_skdKine, m_gyro.getRotation2d(), new SwerveModulePosition[] {
+        //         new SwerveModulePosition(odomDeltas[2], new Rotation2d(odomAngles[2])),
+        //         new SwerveModulePosition(odomDeltas[0], new Rotation2d(odomAngles[0])),
+        //         new SwerveModulePosition(odomDeltas[3], new Rotation2d(odomAngles[3])),
+        //         new SwerveModulePosition(odomDeltas[1], new Rotation2d(odomAngles[1]))
+        //     }); 
+
         m_sdkOdom = new SwerveDriveOdometry(
             m_skdKine, m_gyro.getRotation2d(), new SwerveModulePosition[] {
-                new SwerveModulePosition(odomDeltas[2], new Rotation2d(odomAngles[2])),
                 new SwerveModulePosition(odomDeltas[0], new Rotation2d(odomAngles[0])),
-                new SwerveModulePosition(odomDeltas[3], new Rotation2d(odomAngles[3])),
-                new SwerveModulePosition(odomDeltas[1], new Rotation2d(odomAngles[1]))
+                new SwerveModulePosition(odomDeltas[1], new Rotation2d(odomAngles[1])),
+                new SwerveModulePosition(odomDeltas[2], new Rotation2d(odomAngles[2])),
+                new SwerveModulePosition(odomDeltas[3], new Rotation2d(odomAngles[3]))
             }); 
             
         /* Auton (PathPlanner) */
@@ -154,7 +163,7 @@ public class DriveBase extends SubsystemBase {
     public void periodic() {
         for (int i = 0; i < 4; i++) {
             moduleGroup[i].setSpeedAndAngle(targetModuleStates[i]);
-            odomDeltas[i] = (((moduleGroup[i].integratedDriveEncoder.getPosition() - encoderDriveOffset[i])/6.12) * (0.102*Math.PI));// - odomPrevDeltas[i];
+            odomDeltas[i] = (((moduleGroup[i].integratedDriveEncoder.getPosition() - encoderDriveOffset[i]) / 6.75) * (0.102*Math.PI));// - odomPrevDeltas[i];
             odomAngles[i] = smallestAngle(moduleGroup[i].getRadians());
         }
 
@@ -171,6 +180,8 @@ public class DriveBase extends SubsystemBase {
                 new SwerveModulePosition(Math.abs(odomDeltas[2]), new Rotation2d(odomAngles[2])),
                 new SwerveModulePosition(Math.abs(odomDeltas[3]), new Rotation2d(odomAngles[3])),
         });
+        
+        m_odom.setPose(m_sdkOdom.getPoseMeters());
     }
 
     //
@@ -179,6 +190,10 @@ public class DriveBase extends SubsystemBase {
     public Gyro getGyro() {
         return m_gyro;
     } 
+
+    public Kinematics getKinematics() {
+        return m_kinematics;
+    }
 
     public Odometry getOdometry() {
         return m_odom;

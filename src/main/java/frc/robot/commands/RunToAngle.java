@@ -48,7 +48,7 @@ public class RunToAngle extends Command {
       /*
        * ratio of how many radians are needed to correct to the desired angle
        */
-      double omega = (error / 180) * Math.PI;
+      double omega = (error / 180) * (Math.PI / 2);
       m_driveBase.setRobotRelativeSpeed(new ChassisSpeeds(0, 0, omega));
     }
 

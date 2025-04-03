@@ -192,4 +192,10 @@ public class Kinematics {
     return sdkModuleStates;
   }
     
+  //
+  // Get and Set Methods
+  //
+  public void setIsFieldCentric(boolean isFieldCentric) {
+    this.isFieldCentric = isFieldCentric;
+  }
 }

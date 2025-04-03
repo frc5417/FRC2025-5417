@@ -3,44 +3,44 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-import frc.robot.subsystems.Elevator;
-import frc.robot.Constants;
+
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.drivebase.DriveBase;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class RunElevator extends Command {
-  /** Creates a new RunElevator. */
-  private Elevator m_elevator;
-  private double pos;
-  private boolean terminate = false;
+public class RunDriveBase extends Command {
+  /* Subsystems */
+  private final DriveBase m_driveBase;
 
-  public RunElevator(Elevator elevator, double pos) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_elevator = elevator;
-    this.pos = pos;
+  /* Variables */
+  private final ChassisSpeeds speeds;
+  private boolean terminate;
+
+  /** Creates a new RunDriveBase. */
+  public RunDriveBase(DriveBase driveBase, double x, double y, double omega) {
+    /* Subsystems */
+    m_driveBase = driveBase;
+
+    /* Variables */
+    speeds = new ChassisSpeeds(x, y, omega);
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_elevator.setElevatorPos(this.pos);
+    m_driveBase.setFieldRelativeSpeed(speeds);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    // experimental
-    double error = pos - m_elevator.getEncoder();
-    if (error < Constants.ElevatorConstants.kTolerance) {
-      terminate = true;
-    }
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorMin);
-    // terminate = true
+    m_driveBase.setFieldRelativeSpeed(new ChassisSpeeds(0,0,0));
   }
 
   // Returns true when the command should end.

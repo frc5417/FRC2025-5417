@@ -115,7 +115,8 @@ public final class Constants {
     public static final double shaftRadius = 0.0127; // .5 inches -> m
     public static final double kElevatorPercentage = 1.5;
 
-    /* Feedforward */
+    /* Feedforward */ 
+    // not used
     public static final double feedKS = 0.55;
     public static final double feedKV = 0.13;
     public static final double feedKA = 0;
@@ -134,6 +135,7 @@ public final class Constants {
     public static final double elevatorL2 = 30.09;
     public static final double elevatorL3 = 55.4;
     public static final double elevatorL4 = 103.7;
+    public static final double kTolerance = 0.75;
   }
 
   /**

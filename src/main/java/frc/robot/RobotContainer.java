@@ -37,7 +37,7 @@ public class RobotContainer {
   // Commands
   //
   public static TeleOpDrive teleOpDrive = new TeleOpDrive(m_driveBase, m_elevator, m_coralIntake);
-  private static AutonSelect autonSelect = new AutonSelect();
+  private static AutonSelect autonSelect = new AutonSelect(m_driveBase, m_elevator, m_coralIntake);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
