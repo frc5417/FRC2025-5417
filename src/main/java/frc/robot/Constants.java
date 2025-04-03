@@ -115,9 +115,9 @@ public final class Constants {
     public static final double feedKA = 0;
 
     /* PID */
-    public static final double elevatorkP = 0.2; //0.4 
+    public static final double elevatorkP = 0.075; // 0.1 
     public static final double elevatorkI = 0;
-    public static final double elevatorkD = 0;
+    public static final double elevatorkD = 0.0;
     public static final double elevatorkF = 0;
 
     /* Set Position Values */

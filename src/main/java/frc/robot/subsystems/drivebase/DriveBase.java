@@ -21,6 +21,7 @@ public class DriveBase extends SubsystemBase {
     private final Kinematics m_kinematics;
     private final Gyro m_gyro;
     private final Odometry m_odom;
+    private final PathPlanner m_pathPlanner;
     public static Module[] moduleGroup;
 
     //
@@ -67,7 +68,7 @@ public class DriveBase extends SubsystemBase {
         m_gyro = gyro;
         m_odom = new Odometry();
         moduleGroup = new Module[4];
-
+        
         for (int i = 0; i < 4; i++) {
             moduleGroup[i] = new Module(i, Constants.ModuleConstants.invertedDrive[i]);
             encoderOffset[i] = moduleGroup[i].getRadians();
@@ -88,6 +89,11 @@ public class DriveBase extends SubsystemBase {
                 new SwerveModulePosition(odomDeltas[3], new Rotation2d(odomAngles[3])),
                 new SwerveModulePosition(odomDeltas[1], new Rotation2d(odomAngles[1]))
             }); 
+            
+        /* Auton (PathPlanner) */
+        m_pathPlanner = new PathPlanner(this);
+        m_pathPlanner.initialize();
+
     } 
 
     public void resetOdometry(Pose2d pose) {
