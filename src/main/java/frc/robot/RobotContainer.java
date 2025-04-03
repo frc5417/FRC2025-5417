@@ -59,6 +59,14 @@ public class RobotContainer {
 
   }
 
+  private void registerNamedCommands() {
+    // NamedCommands.registerCommand(null, teleOpDrive);
+    NamedCommands.registerCommand("Run Coral", new RunCoral(m_coralIntake, Constants.CoralConstants.kCoralPercent).withTimeout(3));
+    NamedCommands.registerCommand("Run Elevator Minimum", new RunElevator(m_elevator, Constants.ElevatorConstants.elevatorMin).withTimeout(3));
+    NamedCommands.registerCommand("Run Elevator L3", new RunElevator(m_elevator, Constants.ElevatorConstants.elevatorL3).withTimeout(3));
+    NamedCommands.registerCommand("Run Elevator L4", new RunElevator(m_elevator, Constants.ElevatorConstants.elevatorL4).withTimeout(3));
+  }
+
   public void beginTeleOp() {
     teleOpDrive.schedule();
   }
