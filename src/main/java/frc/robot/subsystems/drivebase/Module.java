@@ -127,7 +127,7 @@ public class Module extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber(modulePos + " Angle", ModuleMath.normalizeDegrees(cnt));
+    SmartDashboard.putNumber(modulePos + " Angle", ModuleMath.normalizeDegrees(getDegrees()));
     SmartDashboard.putNumber(modulePos + " Speed", Math.abs(getDriveVelocity()));
   }
 
