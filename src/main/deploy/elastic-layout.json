@@ -228,8 +228,8 @@
         "containers": [
           {
             "title": "Elevator Revs",
-            "x": 1280.0,
-            "y": 512.0,
+            "x": 0.0,
+            "y": 640.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Text Display",
@@ -242,34 +242,23 @@
           },
           {
             "title": "Elevator Velocity",
-            "x": 1024.0,
-            "y": 512.0,
+            "x": 128.0,
+            "y": 640.0,
             "width": 256.0,
             "height": 128.0,
-            "type": "Text Display",
+            "type": "Number Slider",
             "properties": {
               "topic": "/SmartDashboard/Elevator Velocity",
               "period": 0.06,
               "data_type": "double",
-              "show_submit_button": false
+              "min_value": -1.0,
+              "max_value": 1.0,
+              "divisions": 5,
+              "update_continuously": false
             }
           },
           {
-            "title": "Desired Elevator Pos",
-            "x": 1280.0,
-            "y": 384.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Desired Elevator Pos",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "BL �",
+            "title": "BL Theta",
             "x": 0.0,
             "y": 0.0,
             "width": 128.0,
@@ -280,9 +269,9 @@
               "period": 0.06,
               "data_type": "double",
               "start_angle": 0.0,
-              "end_angle": 180.0,
+              "end_angle": -360.0,
               "min_value": 0.0,
-              "max_value": 180.0,
+              "max_value": 360.0,
               "number_of_labels": 0,
               "wrap_value": false,
               "show_pointer": true,
@@ -295,20 +284,19 @@
             "y": 0.0,
             "width": 256.0,
             "height": 128.0,
-            "type": "Number Bar",
+            "type": "Number Slider",
             "properties": {
               "topic": "/SmartDashboard/Back Left Speed",
               "period": 0.06,
               "data_type": "double",
-              "min_value": 0.0,
+              "min_value": -1.0,
               "max_value": 1.0,
               "divisions": 5,
-              "inverted": false,
-              "orientation": "horizontal"
+              "update_continuously": false
             }
           },
           {
-            "title": "BR �",
+            "title": "BR Theta",
             "x": 0.0,
             "y": 128.0,
             "width": 128.0,
@@ -319,9 +307,9 @@
               "period": 0.06,
               "data_type": "double",
               "start_angle": 0.0,
-              "end_angle": 180.0,
+              "end_angle": -360.0,
               "min_value": 0.0,
-              "max_value": 180.0,
+              "max_value": 360.0,
               "number_of_labels": 0,
               "wrap_value": false,
               "show_pointer": true,
@@ -334,20 +322,19 @@
             "y": 128.0,
             "width": 256.0,
             "height": 128.0,
-            "type": "Number Bar",
+            "type": "Number Slider",
             "properties": {
               "topic": "/SmartDashboard/Back Right Speed",
               "period": 0.06,
               "data_type": "double",
-              "min_value": 0.0,
+              "min_value": -1.0,
               "max_value": 1.0,
               "divisions": 5,
-              "inverted": false,
-              "orientation": "horizontal"
+              "update_continuously": false
             }
           },
           {
-            "title": "FL �",
+            "title": "FL Theta",
             "x": 0.0,
             "y": 256.0,
             "width": 128.0,
@@ -358,9 +345,9 @@
               "period": 0.06,
               "data_type": "double",
               "start_angle": 0.0,
-              "end_angle": 180.0,
+              "end_angle": -360.0,
               "min_value": 0.0,
-              "max_value": 180.0,
+              "max_value": 360.0,
               "number_of_labels": 0,
               "wrap_value": false,
               "show_pointer": true,
@@ -373,16 +360,15 @@
             "y": 256.0,
             "width": 256.0,
             "height": 128.0,
-            "type": "Number Bar",
+            "type": "Number Slider",
             "properties": {
               "topic": "/SmartDashboard/Front Left Speed",
               "period": 0.06,
               "data_type": "double",
-              "min_value": 0.0,
+              "min_value": -1.0,
               "max_value": 1.0,
               "divisions": 5,
-              "inverted": false,
-              "orientation": "horizontal"
+              "update_continuously": false
             }
           },
           {
@@ -391,20 +377,19 @@
             "y": 384.0,
             "width": 256.0,
             "height": 128.0,
-            "type": "Number Bar",
+            "type": "Number Slider",
             "properties": {
               "topic": "/SmartDashboard/Front Right Speed",
               "period": 0.06,
               "data_type": "double",
-              "min_value": 0.0,
+              "min_value": -1.0,
               "max_value": 1.0,
               "divisions": 5,
-              "inverted": false,
-              "orientation": "horizontal"
+              "update_continuously": false
             }
           },
           {
-            "title": "FR �",
+            "title": "FR Theta",
             "x": 0.0,
             "y": 384.0,
             "width": 128.0,
@@ -415,9 +400,9 @@
               "period": 0.06,
               "data_type": "double",
               "start_angle": 0.0,
-              "end_angle": 180.0,
+              "end_angle": -360.0,
               "min_value": 0.0,
-              "max_value": 180.0,
+              "max_value": 360.0,
               "number_of_labels": 0,
               "wrap_value": false,
               "show_pointer": true,
@@ -428,7 +413,7 @@
             "title": "Field",
             "x": 384.0,
             "y": 0.0,
-            "width": 640.0,
+            "width": 768.0,
             "height": 384.0,
             "type": "Field",
             "properties": {
@@ -446,8 +431,8 @@
           },
           {
             "title": "Yaw (Degrees)",
-            "x": 1024.0,
-            "y": 0.0,
+            "x": 384.0,
+            "y": 384.0,
             "width": 384.0,
             "height": 384.0,
             "type": "Radial Gauge",
@@ -456,7 +441,7 @@
               "period": 0.06,
               "data_type": "double",
               "start_angle": 0.0,
-              "end_angle": 360.0,
+              "end_angle": -360.0,
               "min_value": 0.0,
               "max_value": 360.0,
               "number_of_labels": 8,
@@ -467,8 +452,8 @@
           },
           {
             "title": "Auton Chooser",
-            "x": 1024.0,
-            "y": 384.0,
+            "x": 768.0,
+            "y": 512.0,
             "width": 256.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
@@ -476,6 +461,23 @@
               "topic": "/SmartDashboard/Auton Chooser",
               "period": 0.06,
               "sort_options": false
+            }
+          },
+          {
+            "title": "PathPlanner Loaded",
+            "x": 768.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/SmartDashboard/PathPlanner Loaded",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
             }
           }
         ]

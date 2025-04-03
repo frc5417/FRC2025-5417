@@ -6,6 +6,9 @@ package frc.robot;
 
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -68,6 +71,9 @@ public final class Constants {
     public static final double angleKD = 0.0013;
     public static final double angleKF = 0;
     public static final double voltageComp = 12;
+
+    /* "Run to Angle" command */
+    public static final double kErrorTolerance = 1;
   }
 
   /**
@@ -138,5 +144,24 @@ public final class Constants {
     public static final int intakeID = 51;
     public static final int sensorID = 0; // change
     public static final double kCoralPercent = 0.5;
+  }
+
+  public static class AutonConstants {
+    public enum StartPose {
+      BLUE_SIDE_BARGE,
+      RED_SIDE_BARGE,
+      CENTER
+    }
+    
+    /* Poses */
+    public static final Pose2d kBlueSideBarge_Blue = new Pose2d(7.798, 6.164, new Rotation2d(Math.PI));
+    public static final Pose2d kBlueSideBarge_Red = new Pose2d(9.822, 6.174, new Rotation2d(Math.PI));
+
+    public static final Pose2d kRedSideBarge_Blue = new Pose2d(7.698, 1.896, new Rotation2d(Math.PI));
+    public static final Pose2d kRedSideBarge_Red = new Pose2d(9.780, 1.915, new Rotation2d(Math.PI));
+
+    public static final Pose2d kCenter_Blue = new Pose2d(7.937, 3.960, new Rotation2d(Math.PI));
+    public static final Pose2d kCenter_Red = new Pose2d(9.722, 3.990, new Rotation2d(Math.PI));
+
   }
 }

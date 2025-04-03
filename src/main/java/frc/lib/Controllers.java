@@ -11,6 +11,10 @@ public class Controllers {
      * Methods which relate to the driver controller.
      */
     public static class DriverInput {
+        public static CommandXboxController getController() {
+            return m_driver;
+        }
+
         //
         // Joystick Inputs
         //
@@ -53,6 +57,10 @@ public class Controllers {
      * Methods which relate to the manipulator controller.
      */
     public static class ManipulatorInput {
+        public static CommandXboxController getController() {
+            return m_manipulator;
+        }
+
         //
         // Joystick Inputs
         //

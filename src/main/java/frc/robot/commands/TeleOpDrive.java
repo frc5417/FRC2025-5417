@@ -62,6 +62,8 @@ public class TeleOpDrive extends Command {
           Constants.DriveBaseConstants.YPercentage * yVel, 
           Constants.DriveBaseConstants.angularPercentage * omega));
 
+    Controllers.DriverInput.getController().povUp().whileTrue(new RunToAngle(m_driveBase, 0));
+
     /* Gyro */
     if (Controllers.DriverInput.getA()) {
       m_driveBase.getGyro().resetYaw();

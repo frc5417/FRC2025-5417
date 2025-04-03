@@ -25,7 +25,7 @@ public class PathPlanner {
             /* Initialization */
             AutoBuilder.configure(
                 m_driveBase.getOdometry()::getPose,
-                m_driveBase.getOdometry()::setToPose,
+                m_driveBase.getOdometry()::setPose,
                 m_driveBase::getRobotRelativeSpeed,
                 (speeds, feedforwards) -> m_driveBase.setRobotRelativeSpeed(speeds),
                 new PPHolonomicDriveController(
@@ -33,6 +33,8 @@ public class PathPlanner {
                     new PIDConstants(5.0, 0.0, 0.0)),
                 m_robotConfig,
                 () -> {
+                    // if red alliance, then flip the path
+
                     var alliance = DriverStation.getAlliance();
                     if (alliance.isPresent()) {
                         return alliance.get() == DriverStation.Alliance.Red;

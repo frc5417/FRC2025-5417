@@ -127,8 +127,12 @@ public class Module extends SubsystemBase {
 
   @Override
   public void periodic() {
+    /* Angle */
+    integratedAngleEncoder.setPosition(getRevolution());
+
+    /* Telemetry */
     SmartDashboard.putNumber(modulePos + " Angle", ModuleMath.normalizeDegrees(getDegrees()));
-    SmartDashboard.putNumber(modulePos + " Speed", Math.abs(getDriveVelocity()));
+    SmartDashboard.putNumber(modulePos + " Speed", getDriveVelocity());
   }
 
   public double setDriveSpeed(double speed) {
@@ -234,6 +238,10 @@ public class Module extends SubsystemBase {
     return integratedAngleEncoder.getVelocity();
   }
 
+  public double getRevolution() {
+    return _CANCoder.getAbsolutePosition().getValueAsDouble();
+  }
+
   // private void invertDrive() {
   //   invertDriveSpeed = invertDriveSpeed == false;
   // }
@@ -261,8 +269,15 @@ public class Module extends SubsystemBase {
      * Converts individual SwerveModuleStates into custom kinematics ModuleStates
      * @param modState
      */
-    public ModuleState(SwerveModuleState modState) {
-      m_vel = modState.speedMetersPerSecond;
+    public ModuleState(SwerveModuleState modState, int id) {
+      /* Velocity */
+      if (Constants.ModuleConstants.invertedDrive[id]) {
+        m_vel = -modState.speedMetersPerSecond;
+      } else {
+        m_vel = modState.speedMetersPerSecond;
+      }
+
+      /* Direction */
       m_dir = modState.angle.getRadians();
     }
 

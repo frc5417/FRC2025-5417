@@ -172,7 +172,7 @@ public class Kinematics {
     Module.ModuleState[] moduleStates = new Module.ModuleState[4];
 
     for (int i = 0; i < 4; i++) {
-      moduleStates[i] = new Module.ModuleState(sdkModuleStates[i]);
+      moduleStates[i] = new Module.ModuleState(sdkModuleStates[i], i);
     }
 
     return moduleStates;
