@@ -15,7 +15,7 @@ public class RunDriveBaseRobot extends Command {
 
   /* Variables */
   private final ChassisSpeeds speeds;
-  private boolean terminate;
+  private boolean terminate = false;
 
   /** Creates a new RunDriveBase. */
   public RunDriveBaseRobot(DriveBase driveBase, double x, double y, double omega) {

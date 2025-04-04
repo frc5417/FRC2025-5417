@@ -40,7 +40,7 @@ public class RunElevator extends Command {
   @Override
   public void end(boolean interrupted) {
     // m_elevator.setElevatorPos(Constants.ElevatorConstants.elevatorMin);
-    // terminate = true
+    terminate = true;
   }
 
   // Returns true when the command should end.

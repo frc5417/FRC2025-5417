@@ -26,10 +26,9 @@ public class TeleOpDrive extends Command {
   double prev_xVel = 0;
   double prev_yVel = 0;
   double prev_omega = 0;
-  private boolean acceptInput;
 
   /* Commands */
-  private ParallelRaceGroup alignL4 = new RunDriveBaseRobot(m_driveBase, -.1, 0, 0).withTimeout(.1);
+  // private ParallelRaceGroup alignL4 = new RunDriveBaseRobot(m_driveBase, -0.1, 0, 0).withTimeout(0.5);
 
   // 
   // Elevator Variables
@@ -65,18 +64,12 @@ public class TeleOpDrive extends Command {
     prev_omega = omega;
 
     /* Autonomous Routine */
-    if (Controllers.DriverInput.getDpadDown()) {
-      alignL4.schedule();
-    } 
     
     /* Driver Controlled */
-    acceptInput = checkForRunningCommands();
-    if (acceptInput) {
-      m_driveBase.setFieldRelativeSpeed(new ChassisSpeeds(
-            Constants.DriveBaseConstants.XPercentage * xVel, 
-            Constants.DriveBaseConstants.YPercentage * yVel, 
-            Constants.DriveBaseConstants.angularPercentage * omega));
-    }
+    m_driveBase.setFieldRelativeSpeed(new ChassisSpeeds(
+          Constants.DriveBaseConstants.XPercentage * xVel, 
+          Constants.DriveBaseConstants.YPercentage * yVel, 
+          Constants.DriveBaseConstants.angularPercentage * omega));
 
     // Controllers.DriverInput.getController().povUp().whileTrue(new RunToAngle(m_driveBase, 0));
 
@@ -85,7 +78,7 @@ public class TeleOpDrive extends Command {
       m_driveBase.getGyro().resetYaw();
     }
     if (Controllers.DriverInput.getY()) {
-      m_driveBase.getKinematics().setIsFieldCentric(false);
+      m_driveBase.getKinematics().toggleIsFieldCentric();
     }
 
     //
@@ -134,19 +127,6 @@ public class TeleOpDrive extends Command {
   @Override
   public boolean isFinished() {
     return false;
-  }
-
-  /**
-   * 
-   */
-  private boolean checkForRunningCommands() {
-    boolean output = true;
-    if (alignL4.isFinished() == false) {
-      // if alignL4 is not finished
-      output = false;
-    }
-
-    return output;
   }
 }
 

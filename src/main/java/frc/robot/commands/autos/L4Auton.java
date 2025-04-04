@@ -48,8 +48,8 @@ public class L4Auton extends SequentialCommandGroup {
       new InstantCommand(() ->
         m_driveBase.setFieldRelativeSpeed(new ChassisSpeeds(0, 0, 0))
       ),
-      new RunElevator(m_elevator, Constants.ElevatorConstants.elevatorL4).withTimeout(3),
-      new RunCoral(m_coral, -.5).withTimeout(2),
+      new RunElevator(m_elevator, Constants.ElevatorConstants.elevatorL4),
+      new RunCoral(m_coral, -0.5).withTimeout(2),
       new RunElevator(m_elevator, Constants.ElevatorConstants.elevatorMin)
     );
   }

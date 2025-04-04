@@ -19,7 +19,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.ModuleMath;
+import frc.lib.CustomMathLib;
 import frc.robot.Constants;
 
 public class Module extends SubsystemBase {
@@ -134,7 +134,7 @@ public class Module extends SubsystemBase {
     integratedAngleEncoder.setPosition(getRevolution());
 
     /* Telemetry */
-    SmartDashboard.putNumber(modulePos + " Angle", ModuleMath.normalizeDegrees(getDegrees()));
+    SmartDashboard.putNumber(modulePos + " Angle", CustomMathLib.normalizeDegrees(getDegrees()));
     SmartDashboard.putNumber(modulePos + " Speed", speedPower);
   }
 

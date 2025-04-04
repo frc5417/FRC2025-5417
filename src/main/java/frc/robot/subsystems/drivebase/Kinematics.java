@@ -199,4 +199,8 @@ public class Kinematics {
   public void setIsFieldCentric(boolean isFieldCentric) {
     this.isFieldCentric = isFieldCentric;
   }
+
+  public void toggleIsFieldCentric() {
+    this.isFieldCentric = !this.isFieldCentric;
+  }
 }
