@@ -9,6 +9,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.CustomMathLib;
 import frc.robot.Constants;
 
 public class Gyro extends SubsystemBase {
@@ -20,7 +21,7 @@ public class Gyro extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Yaw", getRotation2d().getDegrees());
+    SmartDashboard.putNumber("Yaw", CustomMathLib.normalizeDegrees(getRotation2d().getDegrees()));
   }
 
   //
